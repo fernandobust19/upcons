@@ -60,14 +60,14 @@
         /* Estilo del botón de características */
         .features-button {
             position: relative; /* Necesario para el texto superpuesto */
-            width: 130px;
-            height: 130px;
+            width: 100px; /* Tamaño reducido */
+            height: 100px; /* Tamaño reducido */
             border-radius: 50%;
             border: none;
             /* Nuevos colores más vibrantes e "inteligentes" */
             background: linear-gradient(45deg, #00f2ff, #8a2be2, #ff00ff);
             color: white;
-            font-size: 16px;
+            font-size: 14px; /* Fuente ajustada */
             font-weight: bold;
             cursor: pointer;
             transition: transform 0.2s ease;
@@ -111,6 +111,11 @@
             visibility: visible;
         }
 
+        .modal-overlay.visible .animate-text {
+            /* Inicia la animación cuando el modal es visible */
+            animation-play-state: running;
+        }
+
         .modal-content {
             position: relative;
             width: 90%;
@@ -147,6 +152,50 @@
             cursor: pointer;
             z-index: 1001;
         }
+
+        /* Estilos para la lista de medidas en el modal */
+        .measures-list {
+            list-style-type: none;
+            padding-left: 0;
+        }
+        .measures-list li {
+            background-color: #f0f0f0;
+            padding: 10px;
+            margin-bottom: 8px;
+            border-radius: 5px;
+            border-left: 4px solid #8a2be2;
+        }
+
+        /* Estilos para la lista de características */
+        .features-list {
+            list-style-type: none;
+            padding-left: 0;
+        }
+        .features-list li {
+            margin-bottom: 12px;
+            line-height: 1.5;
+        }
+        .features-list strong {
+            color: #8a2be2; /* Color a juego con el tema */
+        }
+
+        /* --- Estilos para la animación de texto tipo Karaoke --- */
+        @keyframes reveal-text {
+            from {
+                clip-path: inset(0 100% 0 0);
+            }
+            to {
+                clip-path: inset(0 0 0 0);
+            }
+        }
+
+        .karaoke-text {
+            /* Aplica la animación pero la deja en pausa por defecto */
+            animation: reveal-text 2s ease-out forwards;
+            animation-play-state: paused;
+            /* Pequeño retraso para que la animación no sea tan abrupta */
+            animation-delay: 0.3s;
+        }
     </style>
 </head>
 <body>
@@ -164,6 +213,10 @@
                 <button id="features-btn" class="features-button">Características</button>
                 <!-- Nuevo botón para mostrar el visor 3D -->
                 <button id="show-3d-btn" class="features-button">3D</button>
+                <!-- Botón para Medidas -->
+                <button id="measures-btn" class="features-button">MEDIDAS</button>
+                <!-- Botón de ejemplo para Instalación -->
+                <button id="install-btn" class="features-button">INSTALACIÓN</button>
             </div>
         </div>
     </div>
@@ -182,7 +235,33 @@
         <div class="modal-content modal-features">
             <button id="features-close-btn" class="modal-close-btn">&times;</button>
             <h2>Características Principales</h2>
-            <p>La teja española de PVC es una solución moderna que combina el aspecto tradicional de la teja de cerámica con las propiedades avanzadas del plástico. Es una opción ligera, resistente y duradera, diseñada para techos que buscan una estética clásica con los beneficios de un material innovador. Es ideal para quienes desean un acabado elegante y de bajo mantenimiento.</p>
+            <ul class="features-list karaoke-text">
+                <li class="animate-text"><strong>Ligereza:</strong> Son mucho más livianas que las tejas tradicionales, lo que facilita su instalación y reduce la carga sobre la estructura del techo.</li>
+                <li class="animate-text" style="animation-delay: 1s;"><strong>Resistencia:</strong> Protegen eficazmente contra impactos, corrosión y rayos UV.</li>
+                <li class="animate-text" style="animation-delay: 2s;"><strong>Aislamiento:</strong> Ofrecen aislamiento térmico y acústico, mejorando la eficiencia energética de su hogar.</li>
+                <li class="animate-text" style="animation-delay: 3s;"><strong>Durabilidad:</strong> Su vida útil puede superar los 20 años, y algunos modelos garantizan la estabilidad del color por más de una década.</li>
+                <li class="animate-text" style="animation-delay: 4s;"><strong>Bajo Mantenimiento:</strong> Su superficie repele la suciedad y no requiere cuidados especiales.</li>
+                <li class="animate-text" style="animation-delay: 5s;"><strong>Impermeabilidad Total:</strong> Son completamente impermeables, evitando filtraciones de humedad.</li>
+                <li class="animate-text" style="animation-delay: 6s;"><strong>Instalación Sencilla:</strong> Su manejo es fácil y pueden ser instaladas sobre estructuras de madera o metal.</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Ventana Modal para Medidas (inicialmente oculta) -->
+    <div id="measures-modal" class="modal-overlay">
+        <div class="modal-content modal-features">
+            <button id="measures-close-btn" class="modal-close-btn">&times;</button>
+            <h2>Medidas Disponibles</h2>
+            <p class="animate-text">Nuestras tejas se ofrecen en una variedad de longitudes para adaptarse a diferentes necesidades de construcción y minimizar los cortes y desperdicios:</p>
+            <ul class="measures-list karaoke-text">
+                <li class="animate-text" style="animation-delay: 1.5s;">6.104 metros</li>
+                <li class="animate-text" style="animation-delay: 1.8s;">5.01 metros</li>
+                <li class="animate-text" style="animation-delay: 2.1s;">4.14 metros</li>
+                <li class="animate-text" style="animation-delay: 2.4s;">3.70 metros (medida aproximada)</li>
+                <li class="animate-text" style="animation-delay: 2.7s;">3.05 metros</li>
+                <li class="animate-text" style="animation-delay: 3.0s;">2.40 metros</li>
+            </ul>
+            <p class="animate-text" style="animation-delay: 3.5s;"><strong>Nota:</strong> Todas las planchas tienen un ancho total de 1.05 metros y un espesor de 2.5 mm. El ancho útil es de aproximadamente 0.96 metros, después de considerar el solape para la instalación.</p>
         </div>
     </div>
 
@@ -196,7 +275,13 @@
 
             // Abrir el modal
             openButton.addEventListener('click', () => {
+                // Hacemos visible el modal
                 modal.classList.add('visible');
+
+                // Buscamos todos los textos animables dentro de ESTE modal y les damos la clase
+                modal.querySelectorAll('.karaoke-text').forEach(el => {
+                    el.classList.add('animate-text');
+                });
 
                 // --- ¡ESTA ES LA PARTE CLAVE! ---
                 // Si estamos abriendo el modal 3D, le decimos al visor que se muestre.
@@ -206,18 +291,31 @@
                 }
             });
 
+            const closeModal = () => {
+                modal.classList.remove('visible');
+
+                // Al cerrar, quitamos la clase de animación para que pueda volver a ejecutarse
+                modal.querySelectorAll('.karaoke-text').forEach(el => {
+                    el.classList.remove('animate-text');
+                });
+
+                if (modal.id === 'modal-3d' && modelViewer) {
+                    modelViewer.showPoster();
+                }
+            });
+
             // Solo añadir los listeners para cerrar si el botón de cierre existe
             if (closeButton) {
                 // Cerrar el modal con el botón 'X'
                 closeButton.addEventListener('click', () => {
-                    modal.classList.remove('visible');
+                    closeModal();
                 });
             }
 
             // Cerrar el modal al hacer clic en el fondo oscuro
             modal.addEventListener('click', (event) => {
                 if (event.target === modal) {
-                    modal.classList.remove('visible');
+                    closeModal();
                 }
             });
         }
@@ -227,6 +325,12 @@
 
         // Configurar el modal 3D
         setupModal('show-3d-btn', 'modal-3d', 'modal-close');
+
+        // Configurar el modal de Medidas
+        setupModal('measures-btn', 'measures-modal', 'measures-close-btn');
+
+        // Configurar el modal de Instalación (actualmente no hace nada)
+        // setupModal('install-btn', 'install-modal', 'install-close-btn');
     </script>
 </body>
 </html>
