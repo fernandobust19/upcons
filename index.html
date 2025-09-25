@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mi Página Web</title>
+
+    <!-- Carga el componente <model-viewer> de Google -->
+    <script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.5.0/model-viewer.min.js"></script>
+
+    <style>
+        body {
+            font-family: sans-serif;
+            margin: 0;
+            padding: 20px;
+        }
+        /* Contenedor principal que usa Flexbox para el diseño */
+        .main-container {
+            display: flex;
+            flex-wrap: wrap; /* Permite que los elementos se apilen en pantallas pequeñas */
+            gap: 20px; /* Espacio entre el visor y el texto */
+            align-items: center;
+        }
+        /* Contenedor para la imagen estática */
+        .image-container {
+            flex: 1; /* Ocupa el espacio disponible */
+            min-width: 300px; /* Ancho mínimo para evitar que se encoja demasiado */
+            max-height: 60vh;
+        }
+        .static-image {
+            width: 100%;
+            height: auto;
+            border-radius: 12px;
+            object-fit: cover;
+        }
+        /* Contenedor para el texto */
+        .text-container {
+            flex: 1;
+            min-width: 300px;
+        }
+        /* Estilos para el visor del modelo (ahora en el modal) */
+        model-viewer {
+            width: 100%;
+            height: 100%;
+            --poster-color: transparent; /* Fondo transparente mientras carga */
+            border-radius: 12px;
+        }
+
+        /* --- Estilos para el botón y el panel de características --- */
+
+        /* Contenedor para el botón */
+        .features-button-container {
+            display: flex;
+            margin-top: 20px;
+            gap: 20px; /* Espacio entre botones */
+        }
+
+        /* Estilo del botón de características */
+        .features-button {
+            position: relative; /* Necesario para el texto superpuesto */
+            width: 130px;
+            height: 130px;
+            border-radius: 50%;
+            border: none;
+            /* Nuevos colores más vibrantes e "inteligentes" */
+            background: linear-gradient(45deg, #00f2ff, #8a2be2, #ff00ff);
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.2s ease;
+            animation: pulse-glow-smart 4s infinite ease-in-out;
+        }
+
+        /* Animación de pulso para el brillo del botón */
+        @keyframes pulse-glow-smart {
+            0%, 100% {
+                box-shadow: 0 0 25px 5px rgba(0, 242, 255, 0.5), 0 0 35px 15px rgba(255, 0, 255, 0.3);
+            }
+            50% {
+                box-shadow: 0 0 35px 10px rgba(138, 43, 226, 0.5), 0 0 45px 20px rgba(0, 242, 255, 0.3);
+            }
+        }
+
+        .features-button:hover {
+            transform: scale(1.05);
+        }
+
+        /* Panel de detalles, oculto por defecto */
+        .features-details {
+            display: none; /* Oculto inicialmente */
+            margin-top: 20px;
+            padding: 20px;
+            background-color: #f4f4f4;
+            border-left: 5px solid #2979ff;
+            border-radius: 8px;
+        }
+
+        /* Clase para mostrar el panel con JavaScript */
+        .features-details.visible {
+            display: block;
+        }
+
+        /* --- Estilos para el Modal 3D --- */
+        .modal-3d-overlay {
+            position: fixed; /* Se superpone a todo */
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7); /* Fondo oscuro semitransparente */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            opacity: 0; /* Oculto por defecto */
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+
+        .modal-3d-overlay.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal-3d-content {
+            position: relative;
+            width: 80%;
+            height: 80%;
+            max-width: 900px;
+            background-color: #fff;
+            border-radius: 15px;
+            padding: 20px;
+        }
+
+        .modal-close-btn {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: #333;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            font-size: 20px;
+            font-weight: bold;
+            cursor: pointer;
+            z-index: 1001;
+        }
+    </style>
+</head>
+<body>
+    <div class="main-container">
+        <div class="image-container">
+            <!-- Imagen estática que reemplaza al visor 3D -->
+            <img src="teja.png" alt="Teja española de PVC" class="static-image">
+        </div>
+        <div class="text-container">
+            <h1>Un Techo con Historia, una Solución del Futuro.</h1>
+            <p>La apariencia icónica de la teja española, ahora reinventada en PVC de alto rendimiento. Experimente la tranquilidad de un techo que protege con eficacia, resiste el paso del tiempo y conserva un aspecto impecable sin el esfuerzo del mantenimiento tradicional. Su hogar merece lo mejor: una estética que perdura y una protección superior.</p>
+
+            <div class="features-button-container">
+                <!-- Botón para mostrar características -->
+                <button id="features-btn" class="features-button">Características</button>
+                <!-- Nuevo botón para mostrar el visor 3D -->
+                <button id="show-3d-btn" class="features-button">3D</button>
+            </div>
+
+            <div id="features-panel" class="features-details">
+                <p>La teja española de PVC es una solución moderna que combina el aspecto tradicional de la teja de cerámica con las propiedades avanzadas del plástico. Es una opción ligera, resistente y duradera, diseñada para techos que buscan una estética clásica con los beneficios de un material innovador. Es ideal para quienes desean un acabado elegante y de bajo mantenimiento.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Ventana Modal para el Visor 3D (inicialmente oculta) -->
+    <div id="modal-3d" class="modal-3d-overlay">
+        <div class="modal-3d-content">
+            <button id="modal-close" class="modal-close-btn">&times;</button>
+            <!-- El visor 3D ahora vive aquí dentro -->
+            <model-viewer src="teja.glb" alt="Un modelo 3D de una teja" camera-controls auto-rotate exposure="1.2"></model-viewer>
+        </div>
+    </div>
+
+    <script>
+        // --- Lógica para el panel de Características ---
+        const featuresButton = document.getElementById('features-btn');
+        const featuresPanel = document.getElementById('features-panel');
+
+        featuresButton.addEventListener('click', () => {
+            featuresPanel.classList.toggle('visible');
+        });
+
+        // --- Lógica para el Modal 3D ---
+        const show3dButton = document.getElementById('show-3d-btn');
+        const modal3d = document.getElementById('modal-3d');
+        const closeModalButton = document.getElementById('modal-close');
+
+        // Abrir el modal
+        show3dButton.addEventListener('click', () => {
+            modal3d.classList.add('visible');
+        });
+
+        // Cerrar el modal con el botón 'X'
+        closeModalButton.addEventListener('click', () => {
+            modal3d.classList.remove('visible');
+        });
+
+        // Opcional: Cerrar el modal al hacer clic en el fondo oscuro
+        modal3d.addEventListener('click', (event) => {
+            if (event.target === modal3d) {
+                modal3d.classList.remove('visible');
+            }
+        });
+    </script>
+</body>
+</html>
