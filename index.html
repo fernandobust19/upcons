@@ -7,6 +7,10 @@
 
     <!-- Carga el componente <model-viewer> de Google -->
     <script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.5.0/model-viewer.min.js"></script>
+    <!-- Carga de Google Fonts (Orbitron) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
 
     <style>
         body {
@@ -22,17 +26,15 @@
         }
 
         .main-title {
-            font-size: 3rem;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2.5rem; /* Tamaño reducido */
             color: #333;
             margin: 0;
-            font-weight: 300; /* Una fuente más fina para un look elegante */
+            font-weight: 700; /* Negrilla */
             letter-spacing: 3px;
             /* Animación de entrada */
-            animation: fadeInGlow 1.5s ease-out 0.5s forwards;
+            animation: fadeInGlow 1.5s ease-out 0.5s forwards, color-border-glow 4s infinite ease-in-out;
             opacity: 0; /* Inicia invisible */
-            /* Sombra de texto para el efecto de luz */
-            text-shadow: 0 0 8px rgba(255, 255, 255, 0.9),
-                         0 0 15px rgba(0, 242, 255, 0.4);
         }
 
         @keyframes fadeInGlow {
@@ -45,6 +47,16 @@
                 transform: translateY(0);
             }
         }
+
+        @keyframes color-border-glow {
+            0%, 100% {
+                text-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 15px #00f2ff, 0 0 20px #00f2ff;
+            }
+            50% {
+                text-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 15px #ff00ff, 0 0 20px #ff00ff;
+            }
+        }
+
         /* Contenedor principal que usa Flexbox para el diseño */
         .main-container {
             display: flex;
@@ -86,6 +98,8 @@
             display: flex;
             margin-top: 20px;
             gap: 20px; /* Espacio entre botones */
+            flex-wrap: wrap; /* Para que se ajusten en móviles */
+            justify-content: center; /* Centra los botones si se envuelven */
         }
 
         /* Estilo del botón de características */
@@ -140,11 +154,6 @@
         .modal-overlay.visible {
             opacity: 1;
             visibility: visible;
-        }
-
-        .modal-overlay.visible .animate-text {
-            /* Inicia la animación cuando el modal es visible */
-            animation-play-state: running;
         }
 
         .modal-content {
@@ -220,12 +229,15 @@
             }
         }
 
-        .karaoke-text {
+        .karaoke-item {
+            opacity: 0; /* Inicia invisible */
+        }
+
+        .karaoke-item.animate {
             /* Aplica la animación pero la deja en pausa por defecto */
             animation: reveal-text 2s ease-out forwards;
-            animation-play-state: paused;
-            /* Pequeño retraso para que la animación no sea tan abrupta */
-            animation-delay: 0.3s;
+            /* La animación se activa al añadir la clase */
+            opacity: 1;
         }
     </style>
 </head>
@@ -269,14 +281,14 @@
         <div class="modal-content modal-features">
             <button id="features-close-btn" class="modal-close-btn">&times;</button>
             <h2>Características Principales</h2>
-            <ul class="features-list karaoke-text">
-                <li class="animate-text"><strong>Ligereza:</strong> Son mucho más livianas que las tejas tradicionales, lo que facilita su instalación y reduce la carga sobre la estructura del techo.</li>
-                <li class="animate-text" style="animation-delay: 1s;"><strong>Resistencia:</strong> Protegen eficazmente contra impactos, corrosión y rayos UV.</li>
-                <li class="animate-text" style="animation-delay: 2s;"><strong>Aislamiento:</strong> Ofrecen aislamiento térmico y acústico, mejorando la eficiencia energética de su hogar.</li>
-                <li class="animate-text" style="animation-delay: 3s;"><strong>Durabilidad:</strong> Su vida útil puede superar los 20 años, y algunos modelos garantizan la estabilidad del color por más de una década.</li>
-                <li class="animate-text" style="animation-delay: 4s;"><strong>Bajo Mantenimiento:</strong> Su superficie repele la suciedad y no requiere cuidados especiales.</li>
-                <li class="animate-text" style="animation-delay: 5s;"><strong>Impermeabilidad Total:</strong> Son completamente impermeables, evitando filtraciones de humedad.</li>
-                <li class="animate-text" style="animation-delay: 6s;"><strong>Instalación Sencilla:</strong> Su manejo es fácil y pueden ser instaladas sobre estructuras de madera o metal.</li>
+            <ul class="features-list">
+                <li class="karaoke-item"><strong>Ligereza:</strong> Son mucho más livianas que las tejas tradicionales, lo que facilita su instalación y reduce la carga sobre la estructura del techo.</li>
+                <li class="karaoke-item"><strong>Resistencia:</strong> Protegen eficazmente contra impactos, corrosión y rayos UV.</li>
+                <li class="karaoke-item"><strong>Aislamiento:</strong> Ofrecen aislamiento térmico y acústico, mejorando la eficiencia energética de su hogar.</li>
+                <li class="karaoke-item"><strong>Durabilidad:</strong> Su vida útil puede superar los 20 años, y algunos modelos garantizan la estabilidad del color por más de una década.</li>
+                <li class="karaoke-item"><strong>Bajo Mantenimiento:</strong> Su superficie repele la suciedad y no requiere cuidados especiales.</li>
+                <li class="karaoke-item"><strong>Impermeabilidad Total:</strong> Son completamente impermeables, evitando filtraciones de humedad.</li>
+                <li class="karaoke-item"><strong>Instalación Sencilla:</strong> Su manejo es fácil y pueden ser instaladas sobre estructuras de madera o metal.</li>
             </ul>
         </div>
     </div>
@@ -286,16 +298,16 @@
         <div class="modal-content modal-features">
             <button id="measures-close-btn" class="modal-close-btn">&times;</button>
             <h2>Medidas Disponibles</h2>
-            <p class="animate-text">Nuestras tejas se ofrecen en una variedad de longitudes para adaptarse a diferentes necesidades de construcción y minimizar los cortes y desperdicios:</p>
-            <ul class="measures-list karaoke-text">
-                <li class="animate-text" style="animation-delay: 1.5s;">6.104 metros</li>
-                <li class="animate-text" style="animation-delay: 1.8s;">5.01 metros</li>
-                <li class="animate-text" style="animation-delay: 2.1s;">4.14 metros</li>
-                <li class="animate-text" style="animation-delay: 2.4s;">3.70 metros (medida aproximada)</li>
-                <li class="animate-text" style="animation-delay: 2.7s;">3.05 metros</li>
-                <li class="animate-text" style="animation-delay: 3.0s;">2.40 metros</li>
+            <p class="karaoke-item">Nuestras tejas se ofrecen en una variedad de longitudes para adaptarse a diferentes necesidades de construcción y minimizar los cortes y desperdicios:</p>
+            <ul class="measures-list">
+                <li class="karaoke-item">6.104 metros</li>
+                <li class="karaoke-item">5.01 metros</li>
+                <li class="karaoke-item">4.14 metros</li>
+                <li class="karaoke-item">3.70 metros (medida aproximada)</li>
+                <li class="karaoke-item">3.05 metros</li>
+                <li class="karaoke-item">2.40 metros</li>
             </ul>
-            <p class="animate-text" style="animation-delay: 3.5s;"><strong>Nota:</strong> Todas las planchas tienen un ancho total de 1.05 metros y un espesor de 2.5 mm. El ancho útil es de aproximadamente 0.96 metros, después de considerar el solape para la instalación.</p>
+            <p class="karaoke-item"><strong>Nota:</strong> Todas las planchas tienen un ancho total de 1.05 metros y un espesor de 2.5 mm. El ancho útil es de aproximadamente 0.96 metros, después de considerar el solape para la instalación.</p>
         </div>
     </div>
 
@@ -312,9 +324,12 @@
                 // Hacemos visible el modal
                 modal.classList.add('visible');
 
-                // Buscamos todos los textos animables dentro de ESTE modal y les damos la clase
-                modal.querySelectorAll('.karaoke-text').forEach(el => {
-                    el.classList.add('animate-text');
+                // Activa la animación de karaoke para los elementos de texto
+                const karaokeItems = modal.querySelectorAll('.karaoke-item');
+                karaokeItems.forEach((item, index) => {
+                    // Aplicamos un retraso escalonado a cada elemento
+                    item.style.animationDelay = `${index * 0.5 + 0.3}s`;
+                    item.classList.add('animate');
                 });
 
                 // --- ¡ESTA ES LA PARTE CLAVE! ---
@@ -329,14 +344,15 @@
                 modal.classList.remove('visible');
 
                 // Al cerrar, quitamos la clase de animación para que pueda volver a ejecutarse
-                modal.querySelectorAll('.karaoke-text').forEach(el => {
-                    el.classList.remove('animate-text');
+                const karaokeItems = modal.querySelectorAll('.karaoke-item');
+                karaokeItems.forEach(item => {
+                    item.classList.remove('animate');
                 });
 
                 if (modal.id === 'modal-3d' && modelViewer) {
                     modelViewer.showPoster();
                 }
-            });
+            };
 
             // Solo añadir los listeners para cerrar si el botón de cierre existe
             if (closeButton) {
