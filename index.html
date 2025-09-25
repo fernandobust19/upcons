@@ -14,6 +14,37 @@
             margin: 0;
             padding: 20px;
         }
+
+        /* --- Estilos para el Header y Título Principal --- */
+        .page-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .main-title {
+            font-size: 3rem;
+            color: #333;
+            margin: 0;
+            font-weight: 300; /* Una fuente más fina para un look elegante */
+            letter-spacing: 3px;
+            /* Animación de entrada */
+            animation: fadeInGlow 1.5s ease-out 0.5s forwards;
+            opacity: 0; /* Inicia invisible */
+            /* Sombra de texto para el efecto de luz */
+            text-shadow: 0 0 8px rgba(255, 255, 255, 0.9),
+                         0 0 15px rgba(0, 242, 255, 0.4);
+        }
+
+        @keyframes fadeInGlow {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
         /* Contenedor principal que usa Flexbox para el diseño */
         .main-container {
             display: flex;
@@ -199,6 +230,9 @@
     </style>
 </head>
 <body>
+    <header class="page-header">
+        <h1 class="main-title">TEJA ESPAÑOLA PVC</h1>
+    </header>
     <div class="main-container">
         <div class="image-container">
             <!-- Imagen estática que reemplaza al visor 3D -->
