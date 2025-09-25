@@ -87,28 +87,14 @@
         }
 
         /* Panel de detalles, oculto por defecto */
-        .features-details {
-            display: none; /* Oculto inicialmente */
-            margin-top: 20px;
-            padding: 20px;
-            background-color: #f4f4f4;
-            border-left: 5px solid #2979ff;
-            border-radius: 8px;
-        }
-
-        /* Clase para mostrar el panel con JavaScript */
-        .features-details.visible {
-            display: block;
-        }
-
-        /* --- Estilos para el Modal 3D --- */
-        .modal-3d-overlay {
+        /* --- Estilos Genéricos para Modales --- */
+        .modal-overlay {
             position: fixed; /* Se superpone a todo */
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background-color: rgba(0, 0, 0, 0.7); /* Fondo oscuro semitransparente */
+            background-color: rgba(0, 0, 0, 0.8); /* Fondo oscuro semitransparente */
             display: flex;
             justify-content: center;
             align-items: center;
@@ -118,19 +104,30 @@
             transition: opacity 0.3s ease, visibility 0.3s ease;
         }
 
-        .modal-3d-overlay.visible {
+        .modal-overlay.visible {
             opacity: 1;
             visibility: visible;
         }
 
-        .modal-3d-content {
+        .modal-content {
             position: relative;
-            width: 80%;
-            height: 80%;
-            max-width: 900px;
+            width: 90%;
             background-color: #fff;
             border-radius: 15px;
             padding: 20px;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        /* Estilos específicos para el modal 3D */
+        .modal-content.modal-3d {
+            width: 80%;
+            height: 80%;
+            max-width: 900px;
+        }
+        /* Estilos específicos para el modal de características */
+        .modal-content.modal-features {
+            max-width: 600px;
         }
 
         .modal-close-btn {
@@ -166,52 +163,60 @@
                 <!-- Nuevo botón para mostrar el visor 3D -->
                 <button id="show-3d-btn" class="features-button">3D</button>
             </div>
-
-            <div id="features-panel" class="features-details">
-                <p>La teja española de PVC es una solución moderna que combina el aspecto tradicional de la teja de cerámica con las propiedades avanzadas del plástico. Es una opción ligera, resistente y duradera, diseñada para techos que buscan una estética clásica con los beneficios de un material innovador. Es ideal para quienes desean un acabado elegante y de bajo mantenimiento.</p>
-            </div>
         </div>
     </div>
 
     <!-- Ventana Modal para el Visor 3D (inicialmente oculta) -->
-    <div id="modal-3d" class="modal-3d-overlay">
-        <div class="modal-3d-content">
+    <div id="modal-3d" class="modal-overlay">
+        <div class="modal-content modal-3d">
             <button id="modal-close" class="modal-close-btn">&times;</button>
             <!-- El visor 3D ahora vive aquí dentro -->
             <model-viewer src="teja.glb" alt="Un modelo 3D de una teja" camera-controls auto-rotate exposure="1.2"></model-viewer>
         </div>
     </div>
 
+    <!-- Ventana Modal para Características (inicialmente oculta) -->
+    <div id="features-modal" class="modal-overlay">
+        <div class="modal-content modal-features">
+            <button id="features-close-btn" class="modal-close-btn">&times;</button>
+            <h2>Características Principales</h2>
+            <p>La teja española de PVC es una solución moderna que combina el aspecto tradicional de la teja de cerámica con las propiedades avanzadas del plástico. Es una opción ligera, resistente y duradera, diseñada para techos que buscan una estética clásica con los beneficios de un material innovador. Es ideal para quienes desean un acabado elegante y de bajo mantenimiento.</p>
+        </div>
+    </div>
+
     <script>
-        // --- Lógica para el panel de Características ---
-        const featuresButton = document.getElementById('features-btn');
-        const featuresPanel = document.getElementById('features-panel');
+        // Función genérica para controlar los modales
+        function setupModal(buttonId, modalId, closeButtonId) {
+            const openButton = document.getElementById(buttonId);
+            const modal = document.getElementById(modalId);
+            const closeButton = document.getElementById(closeButtonId);
 
-        featuresButton.addEventListener('click', () => {
-            featuresPanel.classList.toggle('visible');
-        });
+            // Abrir el modal
+            openButton.addEventListener('click', () => {
+                modal.classList.add('visible');
+            });
 
-        // --- Lógica para el Modal 3D ---
-        const show3dButton = document.getElementById('show-3d-btn');
-        const modal3d = document.getElementById('modal-3d');
-        const closeModalButton = document.getElementById('modal-close');
-
-        // Abrir el modal
-        show3dButton.addEventListener('click', () => {
-            modal3d.classList.add('visible');
-        });
-
-        // Cerrar el modal con el botón 'X'
-        closeModalButton.addEventListener('click', () => {
-            modal3d.classList.remove('visible');
-        });
-
-        // Opcional: Cerrar el modal al hacer clic en el fondo oscuro
-        modal3d.addEventListener('click', (event) => {
-            if (event.target === modal3d) {
-                modal3d.classList.remove('visible');
+            // Solo añadir los listeners para cerrar si el botón de cierre existe
+            if (closeButton) {
+                // Cerrar el modal con el botón 'X'
+                closeButton.addEventListener('click', () => {
+                    modal.classList.remove('visible');
+                });
             }
-        });
+
+            // Cerrar el modal al hacer clic en el fondo oscuro
+            modal.addEventListener('click', (event) => {
+                if (event.target === modal) {
+                    modal.classList.remove('visible');
+                }
+            });
+        }
+
+        // Configurar el modal de Características
+        setupModal('features-btn', 'features-modal', 'features-close-btn');
+
+        // Configurar el modal 3D
+        setupModal('show-3d-btn', 'modal-3d', 'modal-close');
     </script>
 </body>
 </html>
