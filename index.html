@@ -16,18 +16,25 @@
         body {
             font-family: sans-serif;
             margin: 0;
-            padding: 20px;
         }
 
         /* --- Estilos para el Header y Título Principal --- */
         .page-header {
+            display: flex;
+            flex-direction: column; /* Apila el logo y el título verticalmente */
+            align-items: center;
+            justify-content: center;
+            gap: 10px; /* Reduce el espacio entre logo y título */
             text-align: center;
-            margin-bottom: 30px;
+            margin-bottom: 40px; /* Aumenta el margen inferior */
+            padding: 20px 10px; /* Añade padding */
+            background: linear-gradient(to bottom, #e0f7fa 0%, #ffffff 100%); /* Degradado azul sutil */
+            border-radius: 0 0 30px 30px; /* Bordes redondeados inferiores */
         }
 
         .main-title {
             font-family: 'Orbitron', sans-serif;
-            font-size: 2rem; /* Tamaño ajustado */
+            font-size: 1.5rem;
             color: #333;
             margin: 0;
             font-weight: 700; /* Negrilla */
@@ -36,6 +43,11 @@
             text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.15);
             animation: fadeInGlow 1.5s ease-out 0.5s forwards;
             opacity: 0; /* Inicia invisible */
+        }
+
+        .header-logo {
+            height: 80px; /* Altura del logo */
+            width: auto;
         }
 
         @keyframes fadeInGlow {
@@ -54,12 +66,21 @@
             display: flex;
             flex-wrap: wrap; /* Permite que los elementos se apilen en pantallas pequeñas */
             gap: 20px; /* Espacio entre el visor y el texto */
-            align-items: center;
+            align-items: flex-start; /* Alinea los items al inicio */
+            padding: 0 20px; /* Añade el padding lateral que antes estaba en el body */
+        }
+        
+        /* Contenedor que agrupa la imagen y los botones */
+        .image-buttons-wrapper {
+            display: flex;
+            gap: 15px;
+            align-items: flex-start;
+            flex: 1;
+            min-width: 300px;
         }
         /* Contenedor para la imagen estática */
         .image-container {
             flex: 1; /* Ocupa el espacio disponible */
-            min-width: 300px; /* Ancho mínimo para evitar que se encoja demasiado */
             max-height: 60vh;
         }
         .static-image {
@@ -70,21 +91,29 @@
         }
         /* Contenedor para el texto */
         .text-container {
-            flex: 1;
+            flex: 2; /* Más espacio para el texto */
             min-width: 300px;
         }
         .text-container h1 {
-            font-family: 'Playfair Display', serif;
-            font-size: 1.6rem; /* Tamaño más pequeño */
+            font-family: 'Lato', sans-serif; /* Fuente más moderna y atractiva */
+            font-size: 1.4rem; /* Tamaño ajustado */
+            font-weight: 700; /* Poner en negrilla */
             color: #6a4a9c; /* Un morado elegante y más sutil */
             margin-bottom: 15px;
             line-height: 1.3;
+            /* Efecto 3D con sombra y luz */
+            text-shadow: 
+                0px 1px 1px rgba(0,0,0,0.2), /* Sombra sutil inferior */
+                0px 2px 2px rgba(0,0,0,0.15), /* Sombra más profunda */
+                0px 3px 3px rgba(0,0,0,0.1), /* Sombra aún más profunda */
+                0 0 5px rgba(255, 255, 255, 0.5); /* Brillo de luz */
         }
         .text-container p {
             font-family: 'Lato', sans-serif; /* Fuente más elegante y legible */
-            font-size: 1.1rem; /* Tamaño ligeramente mayor */
-            line-height: 1.7; /* Mayor espacio entre líneas para facilitar la lectura */
+            font-size: 1rem; /* Tamaño reducido */
+            line-height: 1.6; /* Espacio entre líneas ajustado */
             color: #444; /* Un gris oscuro que es más suave que el negro puro */
+            text-align: justify; /* Alineación justificada */
         }
         /* Estilos para el visor del modelo (ahora en el modal) */
         model-viewer {
@@ -114,7 +143,7 @@
 
         /* Clase para desvanecer el overlay de carga */
         .loading-overlay.hide {
-            opacity: 0;
+            display: none; /* Oculta completamente el elemento */
             pointer-events: none; /* ¡Esta es la clave! Ignora los clics en el overlay oculto */
         }
 
@@ -127,20 +156,21 @@
 
         /* --- Estilos para el botón y el panel de características --- */
 
-        /* Contenedor para el botón */
+        /* Contenedor para los botones, ahora en columna al lado de la imagen */
         .features-button-container {
             display: flex;
-            margin-top: 20px;
-            gap: 20px; /* Espacio entre botones */
-            flex-wrap: wrap; /* Para que se ajusten en móviles */
-            justify-content: center; /* Centra los botones si se envuelven */
+            flex-direction: column; /* Apila los botones verticalmente */
+            gap: 10px; /* Espacio más pequeño entre botones */
+            flex-shrink: 0; /* Evita que el contenedor de botones se encoja */
+            justify-content: flex-start;
+            align-items: center;
         }
 
         /* Estilo del botón de características */
         .features-button {
-            position: relative; /* Necesario para el texto superpuesto */
-            width: 100px; /* Tamaño reducido */
-            height: 100px; /* Tamaño reducido */
+            position: relative;
+            width: 70px; /* Tamaño más pequeño */
+            height: 70px; /* Tamaño más pequeño */
             border-radius: 50%;
             border: none;
             padding: 5px; /* Pequeño padding para evitar que el texto toque los bordes */
@@ -148,23 +178,29 @@
             align-items: center;
             justify-content: center;
             text-align: center;
-            /* Nuevos colores más vibrantes e "inteligentes" */
-            background: linear-gradient(45deg, #00f2ff, #8a2be2, #ff00ff);
+            background: linear-gradient(45deg, #00bfa5, #01579b); /* Gradiente elegante de verde-azulado a azul oscuro */
             color: white;
-            font-size: 13px; /* Fuente ajustada para que quepa el texto */
+            font-size: 10px; /* Fuente más pequeña */
             font-weight: bold;
             cursor: pointer;
             transition: transform 0.2s ease;
             animation: pulse-glow-smart 4s infinite ease-in-out;
+            /* --- Evita el recuadro de selección en móviles --- */
+            -webkit-touch-callout: none; /* iOS Safari */
+            -webkit-user-select: none;   /* Safari */
+            -khtml-user-select: none;    /* Konqueror HTML */
+            -moz-user-select: none;      /* Old versions of Firefox */
+            -ms-user-select: none;       /* Internet Explorer/Edge */
+            user-select: none;           /* Standard */
         }
 
         /* Animación de pulso para el brillo del botón */
         @keyframes pulse-glow-smart {
             0%, 100% {
-                box-shadow: 0 0 25px 5px rgba(0, 242, 255, 0.5), 0 0 35px 15px rgba(255, 0, 255, 0.3);
+                box-shadow: 0 0 20px 3px rgba(0, 191, 165, 0.6);
             }
             50% {
-                box-shadow: 0 0 35px 10px rgba(138, 43, 226, 0.5), 0 0 45px 20px rgba(0, 242, 255, 0.3);
+                box-shadow: 0 0 30px 8px rgba(1, 87, 155, 0.6);
             }
         }
 
@@ -218,28 +254,46 @@
 
         /* --- Estilos para Subtítulos Elegantes en Modales --- */
         .modal-content h2 {
+            position: relative; /* Necesario para el efecto de luz */
             font-family: 'Playfair Display', serif;
             text-align: center;
             font-size: 2rem;
-            animation: subtle-glow 6s infinite alternate;
+            color: #fff; /* Texto blanco para contraste */
+            /* Nuevo fondo oscuro y elegante */
+            background: radial-gradient(ellipse at center, #333 0%, #111 100%);
+            padding: 15px 20px;
+            border-radius: 8px;
+            overflow: hidden; /* Oculta el pseudo-elemento fuera del título */
+            margin-bottom: 25px;
         }
 
-        .modal-content h2::first-letter {
-            font-size: 1.2em;
-            color: #8a2be2;
+        /* Pseudo-elemento para crear un efecto de luz tipo "aurora" */
+        .modal-content h2::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: 0;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(0, 191, 165, 0.2), transparent, rgba(1, 87, 155, 0.2), transparent);
+            animation: aurora-sweep 8s linear infinite;
         }
 
-        @keyframes subtle-glow {
-            from { text-shadow: 0 0 7px rgba(0, 242, 255, 0.7); }
-            to { text-shadow: 0 0 7px rgba(255, 0, 255, 0.7); }
+        /* Animación de la luz "aurora" */
+        @keyframes aurora-sweep {
+            from {
+                transform: translateX(-50%) rotate(0deg);
+            }
+            to {
+                transform: translateX(0) rotate(360deg);
+            }
         }
-
 
         .modal-close-btn {
             position: absolute;
             top: 15px;
             right: 15px;
-            background: #333;
+            background: #222; /* Ligeramente más oscuro */
             color: white;
             border: none;
             border-radius: 50%;
@@ -252,10 +306,13 @@
         }
 
         .modal-image {
-            width: 100%;
-            height: auto;
+            float: right; /* Flota la imagen a la derecha */
+            width: 45%; /* Reduce el ancho de la imagen */
+            max-width: 250px; /* Ancho máximo para que no sea demasiado grande */
+            margin-left: 15px; /* Espacio a la izquierda de la imagen */
+            margin-bottom: 10px; /* Espacio debajo de la imagen */
             border-radius: 10px;
-            margin-bottom: 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1); /* Sombra sutil */
         }
 
         /* Estilos para la lista de medidas en el modal */
@@ -271,29 +328,96 @@
             border-left: 4px solid #8a2be2;
         }
 
+        /* --- Estilos para el layout del modal de medidas --- */
+        .measures-layout {
+            display: flex;
+            flex-wrap: wrap; /* Para que se apile en pantallas pequeñas */
+            gap: 20px;
+            align-items: flex-start;
+        }
+
+        .measures-text {
+            flex: 2; /* Ocupa más espacio */
+            min-width: 250px;
+        }
+
+        .measures-gallery {
+            flex: 1; /* Ocupa menos espacio */
+            min-width: 150px;
+            position: relative; /* Para posicionar las imágenes */
+            height: 400px; /* Altura aumentada para el carrusel vertical */
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        .gallery-inner {
+            /* Contenedor que se animará verticalmente */
+            animation: vertical-scroll 12s linear infinite;
+        }
+
+        .measures-gallery .gallery-image {
+            /* Las imágenes ahora se apilan verticalmente */
+            display: block;
+            width: 100%;
+            height: auto;
+            object-fit: cover;
+            margin-bottom: 10px; /* Espacio entre imágenes */
+        }
+
+        @keyframes vertical-scroll {
+            from {
+                transform: translateY(0);
+            }
+            to {
+                transform: translateY(-50%); /* Desplaza la mitad del contenido para un bucle perfecto */
+            }
+        }
+
         /* Estilos para la lista de características */
         .features-list {
+            display: grid; /* Usamos grid para un diseño de tarjetas moderno */
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /* Columnas responsivas */
+            gap: 20px; /* Espacio entre tarjetas */
             list-style-type: none;
             padding-left: 0;
         }
         .features-list li {
-            display: flex;
-            align-items: flex-start;
-            margin-bottom: 15px;
-            line-height: 1.5;
+            background-color: #f8f9fa; /* Fondo suave para la tarjeta */
+            padding: 20px;
+            border-radius: 10px;
+            border-left: 5px solid #00bfa5; /* Acento de color del tema */
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            font-family: 'Lato', sans-serif;
         }
         .features-list li::before {
-            content: '✔'; /* Icono de check */
-            color: #28a745; /* Verde para el check */
-            margin-right: 10px;
+            /* Reemplazamos el check simple por un ícono más elaborado */
+            content: '🛡️'; /* Usamos un emoji de escudo como placeholder visual */
+            display: block;
+            font-size: 2rem;
+            margin-bottom: 10px;
+            color: #00bfa5;
+        }
+        .features-list strong {
+            display: block; /* El título en su propia línea */
+            font-size: 1.1rem;
+            color: #333;
+            margin-bottom: 8px;
             font-weight: bold;
         }
+        .features-list p { /* Estilo para el texto descriptivo */
+            margin: 0;
+            line-height: 1.6;
+            color: #555;
+        }
 
-        /* Efecto de resaltado para palabras clave */
-        .features-list strong {
-            color: #333;
-            text-shadow: 0 0 4px rgba(138, 43, 226, 0.4);
-            transition: text-shadow 0.3s ease;
+        /* Estilo para resaltar texto importante en los modales */
+        .modal-content strong {
+            background-color: #f0e6ff; /* Fondo lila muy claro */
+            color: #6a4a9c; /* Color morado del tema */
+            padding: 2px 5px;
+            border-radius: 4px;
+            font-weight: 700;
         }
 
         /* --- Estilos para la animación de aparición de texto --- */
@@ -316,6 +440,47 @@
             animation: fadeInUp 0.6s ease-out forwards;
         }
 
+        /* --- Estilos para la sección de video --- */
+        .video-section {
+            /* Se centra el contenedor del video y se le da un ancho máximo */
+            max-width: 300px; /* Ancho aún más reducido para disminuir la altura */
+            margin: 0 auto 40px auto; /* Centra el contenedor y añade margen inferior */
+            padding: 0 20px; /* Mantiene un espaciado si la pantalla es muy pequeña */
+            box-sizing: border-box;
+        }
+
+        .video-section video {
+            width: 100%;
+            height: auto;
+            border-radius: 15px;
+            display: block; /* Para evitar espacios extra debajo del video */
+        }
+
+        /* --- Estilos para la sección de texto de convencimiento --- */
+        .conviction-section {
+            padding: 40px 20px;
+            background-color: #ffffff;
+            text-align: center;
+        }
+
+        .conviction-content {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .conviction-content h2 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.8rem;
+            color: #8a2be2; /* Color principal */
+            margin-bottom: 15px;
+        }
+
+        .conviction-content p {
+            font-family: 'Lato', sans-serif;
+            font-size: 1.1rem;
+            color: #333;
+            line-height: 1.7;
+        }
         /* --- Nuevos Estilos para la Lista de Precios --- */
         .pricing-section {
             padding: 40px 20px;
@@ -340,23 +505,23 @@
         .price-item {
             display: flex;
             align-items: center;
-            gap: 20px;
+            gap: 15px; /* Espacio reducido */
             background-color: #fff;
             border-radius: 15px;
             box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
-            padding: 15px 20px;
+            padding: 10px 15px; /* Padding reducido */
             margin-bottom: 15px;
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            transition: box-shadow 0.2s ease; /* Solo transicionará la sombra */
         }
 
         .price-item:hover {
-            transform: translateY(-10px);
+            /* Se elimina el efecto de movimiento */
             box-shadow: 0 12px 30px rgba(0, 0, 0, 0.12);
         }
 
         .price-item-image {
-            width: 80px;
-            height: 80px;
+            width: 60px; /* Imagen más pequeña */
+            height: 60px; /* Imagen más pequeña */
             object-fit: cover;
             border-radius: 10px;
         }
@@ -367,38 +532,54 @@
 
         .price-item-info h4 {
             margin: 0 0 5px 0;
-            font-size: 1.1rem;
+            font-size: 1rem; /* Fuente más pequeña */
         }
 
         .price-item-info p {
             margin: 0;
             color: #555;
-            font-size: 0.9rem;
+            font-size: 0.8rem; /* Fuente más pequeña */
         }
 
         .price-item-value {
-            font-size: 1.5rem;
+            font-size: 1.3rem; /* Fuente de precio más pequeña */
             font-weight: bold;
             color: #8a2be2;
-            white-space: nowrap;
+        }
+
+        /* Contenedor para el botón de WhatsApp y el ícono externo */
+        .whatsapp-cta-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 15px; /* Espacio entre el botón y el ícono */
+            margin-top: 40px;
+        }
+
+        .whatsapp-icon {
+            width: 60px; /* Tamaño del nuevo ícono */
+            height: auto;
+            transition: transform 0.3s ease;
+        }
+
+        .whatsapp-icon:hover {
+            transform: scale(1.1);
         }
 
         .cta-button {
-            display: block;
-            max-width: 400px;
-            margin: 40px auto 0 auto;
-            padding: 15px;
-            background: linear-gradient(45deg, #8a2be2, #ff00ff);
+            /* Ajustes al botón existente */
+            padding: 15px 25px;
+            background: linear-gradient(45deg, #25D366, #128C7E); /* Colores de WhatsApp */
             color: white;
             text-align: center;
             text-decoration: none;
             font-weight: bold;
             border-radius: 8px;
-            transition: background-color 0.3s ease;
+            transition: background 0.3s ease;
         }
 
         .cta-button:hover {
-            background: linear-gradient(45deg, #ff00ff, #8a2be2);
+            background: linear-gradient(45deg, #128C7E, #25D366); /* Invierte el gradiente en hover */
         }
 
         /* --- Estilos para el Pie de Página (Footer) --- */
@@ -429,12 +610,12 @@
             line-height: 1.6;
         }
 
-        .location-links {
+        .footer-locations {
             display: flex;
             justify-content: center;
-            gap: 15px;
+            gap: 20px;
             flex-wrap: wrap;
-            margin-bottom: 30px;
+            margin-top: 20px;
         }
 
         .location-links a {
@@ -451,6 +632,33 @@
             background-color: #8a2be2;
         }
 
+        .location-item {
+            margin-bottom: 20px;
+        }
+
+        .location-item h4 {
+            color: #fff;
+            margin: 0 0 5px 0;
+        }
+
+        .location-item p {
+            margin: 0 0 10px 0;
+            font-size: 0.9rem;
+        }
+
+        .location-item a {
+            display: inline-flex; /* Para alinear ícono y texto */
+            align-items: center;
+            gap: 8px; /* Espacio entre ícono y texto */
+            background-color: #4285F4; /* Color azul de Google */
+            color: #fff; /* Texto blanco para mejor contraste */
+            padding: 8px 15px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: background-color 0.3s ease;
+        }
+
         .footer-bottom {
             border-top: 1px solid #444;
             padding-top: 20px;
@@ -461,29 +669,45 @@
 </head>
 <body>
     <header class="page-header">
+        <img src="logo.png" alt="Logo Upcons" class="header-logo">
         <h1 class="main-title">TEJA ESPAÑOLA PVC</h1>
     </header>
     <div class="main-container">
-        <div class="image-container">
-            <!-- Imagen estática que reemplaza al visor 3D -->
-            <img src="teja.png" alt="Teja española de PVC" class="static-image">
-        </div>
-        <div class="text-container">
-            <h1>Un Techo con Historia, una Solución del Futuro.</h1>
-            <p>La apariencia icónica de la teja española, ahora reinventada en PVC de alto rendimiento. Experimente la tranquilidad de un techo que protege con eficacia, resiste el paso del tiempo y conserva un aspecto impecable sin el esfuerzo del mantenimiento tradicional. Su hogar merece lo mejor: una estética que perdura y una protección superior.</p>
-
+        <div class="image-buttons-wrapper">
+            <div class="image-container">
+                <!-- Imagen estática que reemplaza al visor 3D -->
+                <img src="teja.png" alt="Teja española de PVC" class="static-image">
+            </div>
+            <!-- Contenedor de botones al lado derecho de la imagen -->
             <div class="features-button-container">
                 <!-- Botón para mostrar características -->
-                <button id="features-btn" class="features-button">Características</button>
+                <button id="features-btn" class="features-button">CONOCE</button>
                 <!-- Nuevo botón para mostrar el visor 3D -->
                 <button id="show-3d-btn" class="features-button">3D</button>
                 <!-- Botón para Medidas -->
                 <button id="measures-btn" class="features-button">MEDIDAS</button>
                 <!-- Botón de ejemplo para Instalación -->
-                <button id="install-btn" class="features-button">INSTALACIÓN</button>
+                <button id="install-btn" class="features-button">SISTEMA</button>
             </div>
         </div>
+        <div class="text-container">
+            <h1>Un Techo con Historia, una Solución del Futuro.</h1>
+            <p>La apariencia icónica de la teja española, ahora reinventada en PVC de alto rendimiento. Experimente la tranquilidad de un techo que protege con eficacia, resiste el paso del tiempo y conserva un aspecto impecable sin el esfuerzo del mantenimiento tradicional. Su hogar merece lo mejor: una estética que perdura y una protección superior.</p>
+        </div>
     </div>
+
+    <!-- Sección para el video -->
+    <section class="video-section">
+        <video src="video.mp4" autoplay muted loop playsinline></video>
+    </section>
+
+    <!-- Nueva sección de texto persuasivo -->
+    <section class="conviction-section">
+        <div class="conviction-content">
+            <h2>¿Listo para dar el paso definitivo hacia un techo superior?</h2>
+            <p>No es solo una compra, es una inversión en la tranquilidad y el valor de su hogar. Cada teja está diseñada para ofrecer décadas de protección, belleza y rendimiento sin preocupaciones. Explore nuestras opciones y descubra por qué somos la elección inteligente para su proyecto.</p>
+        </div>
+    </section>
 
     <section class="pricing-section">
         <h2 class="section-title">Nuestros Productos</h2>
@@ -520,22 +744,33 @@
             </li>
         </ul>
         <!-- Puedes cambiar el enlace de WhatsApp -->
-        <a href="https://wa.me/593995986366?text=porfavor%20ayudame%20con%20una%20cotizacion," target="_blank" class="cta-button">Solicitar Cotización</a>
+        <div class="whatsapp-cta-container">
+            <a href="https://wa.me/593995986366?text=porfavor%20ayudame%20con%20una%20cotizacion," target="_blank" class="cta-button">
+                Cotizar por WhatsApp
+            </a>
+            <img src="wat.png" alt="Ícono de WhatsApp" class="whatsapp-icon">
+        </div>
     </section>
 
     <footer class="site-footer">
         <div class="footer-content">
             <h3>Nuestras Ubicaciones</h3>
-            <div class="footer-locations">
+            <div class="footer-locations"> <!-- Contenedor para los items de ubicación -->
                 <div class="location-item">
                     <h4>Upcons Sur (La Ecuatoriana)</h4>
                     <p>Av. La Ecuatoriana & Martín Santiago Icaza</p>
-                    <a href="https://maps.app.goo.gl/JX7EaUsHb8yT9vgA6?g_st=ac" target="_blank" class="location-links">Ver en Google Maps</a>
+                    <a href="https://maps.app.goo.gl/JX7EaUsHb8yT9vgA6?g_st=ac" target="_blank">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path d="M8 16s6-5.686 6-10A6 6 0 0 0 2 6c0 4.314 6 10 6 10zm0-7a3 3 0 1 1 0-6 3 3 0 0 1 0 6z"/></svg>
+                        Ver en Google Maps
+                    </a>
                 </div>
                 <div class="location-item">
                     <h4>Upcons (Mariscal Sucre)</h4>
                     <p>Av. Mariscal Sucre</p>
-                    <a href="https://maps.app.goo.gl/6yk2nNjZJQ1WWJDA7?g_st=ac" target="_blank" class="location-links">Ver en Google Maps</a>
+                    <a href="https://maps.app.goo.gl/6yk2nNjZJQ1WWJDA7?g_st=ac" target="_blank">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path d="M8 16s6-5.686 6-10A6 6 0 0 0 2 6c0 4.314 6 10 6 10zm0-7a3 3 0 1 1 0-6 3 3 0 0 1 0 6z"/></svg>
+                        Ver en Google Maps
+                    </a>
                 </div>
             </div>
             <div class="footer-bottom">
@@ -551,7 +786,7 @@
             <!-- El visor 3D ahora vive aquí dentro -->
             <model-viewer id="main-viewer" src="teja.glb" alt="Un modelo 3D de una teja" camera-controls auto-rotate exposure="1.2" reveal="manual">
                 <!-- Overlay de carga personalizado -->
-                <div class="loading-overlay" slot="progress-bar"><span class="loading-percentage">0%</span></div>
+                <div class="loading-overlay" slot="progress-bar"><span class="loading-percentage">Cargando...</span></div>
             </model-viewer>
         </div>
     </div>
@@ -562,13 +797,13 @@
             <button id="features-close-btn" class="modal-close-btn">&times;</button>
             <h2>Características Principales</h2>
             <ul class="features-list">
-                <li class="reveal-item"><strong>Ligereza:</strong> Son mucho más livianas que las tejas tradicionales, lo que facilita su instalación y reduce la carga sobre la estructura del techo.</li>
-                <li class="reveal-item"><strong>Resistencia:</strong> Protegen eficazmente contra impactos, corrosión y rayos UV.</li>
-                <li class="reveal-item"><strong>Aislamiento:</strong> Ofrecen aislamiento térmico y acústico, mejorando la eficiencia energética de su hogar.</li>
-                <li class="reveal-item"><strong>Durabilidad:</strong> Su vida útil puede superar los 20 años, y algunos modelos garantizan la estabilidad del color por más de una década.</li>
-                <li class="reveal-item"><strong>Bajo Mantenimiento:</strong> Su superficie repele la suciedad y no requiere cuidados especiales.</li>
-                <li class="reveal-item"><strong>Impermeabilidad Total:</strong> Son completamente impermeables, evitando filtraciones de humedad.</li>
-                <li class="reveal-item"><strong>Instalación Sencilla:</strong> Su manejo es fácil y pueden ser instaladas sobre estructuras de madera o metal.</li>
+                <li class="reveal-item"><strong>Ligereza</strong><p>Son mucho más livianas que las tejas tradicionales, lo que facilita su instalación y reduce la carga sobre la estructura del techo.</p></li>
+                <li class="reveal-item"><strong>Resistencia</strong><p>Protegen eficazmente contra impactos, corrosión y rayos UV.</p></li>
+                <li class="reveal-item"><strong>Aislamiento</strong><p>Ofrecen aislamiento térmico y acústico, mejorando la eficiencia energética de su hogar.</p></li>
+                <li class="reveal-item"><strong>Durabilidad</strong><p>Su vida útil puede superar los 20 años, y algunos modelos garantizan la estabilidad del color por más de una década.</p></li>
+                <li class="reveal-item"><strong>Bajo Mantenimiento</strong><p>Su superficie repele la suciedad y no requiere cuidados especiales.</p></li>
+                <li class="reveal-item"><strong>Impermeabilidad Total</strong><p>Son completamente impermeables, evitando filtraciones de humedad.</p></li>
+                <li class="reveal-item"><strong>Instalación Sencilla</strong><p>Su manejo es fácil y pueden ser instaladas sobre estructuras de madera o metal.</p></li>
             </ul>
         </div>
     </div>
@@ -578,16 +813,31 @@
         <div class="modal-content modal-features">
             <button id="measures-close-btn" class="modal-close-btn">&times;</button>
             <h2>Medidas Disponibles</h2>
-            <p class="reveal-item">Nuestras tejas se ofrecen en una variedad de longitudes para adaptarse a diferentes necesidades de construcción y minimizar los cortes y desperdicios:</p>
-            <ul class="measures-list">
-                <li class="reveal-item">Teja española 6.14 m. X 1.05</li>
-                <li class="reveal-item">Teja española 5.04 m. X 1.05</li>
-                <li class="reveal-item">Teja española 4.16 m. X 1.05</li>
-                <li class="reveal-item">Teja española 3.70 m. X 1.05</li>
-                <li class="reveal-item">Teja española 3.06 m. X 1.05</li>
-                <li class="reveal-item">Teja española 2.40 m. X 1.05</li>
-            </ul>
-            <p class="reveal-item"><strong>Nota:</strong> Todas las planchas tienen un ancho total de 1.05 metros y un espesor de 2.5 mm. El ancho útil es de aproximadamente 0.96 metros, después de considerar el solape para la instalación.</p>
+            <div class="measures-layout">
+                <div class="measures-text">
+                    <p class="reveal-item">Nuestras tejas se ofrecen en una variedad de longitudes para adaptarse a diferentes necesidades de construcción y minimizar los cortes y desperdicios:</p>
+                    <ul class="measures-list">
+                        <li class="reveal-item">Teja española 6.14 m. X 1.05</li>
+                        <li class="reveal-item">Teja española 5.04 m. X 1.05</li>
+                        <li class="reveal-item">Teja española 4.16 m. X 1.05</li>
+                        <li class="reveal-item">Teja española 3.70 m. X 1.05</li>
+                        <li class="reveal-item">Teja española 3.06 m. X 1.05</li>
+                        <li class="reveal-item">Teja española 2.40 m. X 1.05</li>
+                    </ul>
+                    <p class="reveal-item"><strong>Nota:</strong> Todas las planchas tienen un ancho total de 1.05 metros y un espesor de 2.5 mm. El ancho útil es de aproximadamente 0.96 metros, después de considerar el solape para la instalación.</p>
+                </div>
+                <div class="measures-gallery">
+                    <div class="gallery-inner">
+                        <img src="t1.png" alt="Vista de teja 1" class="gallery-image">
+                        <img src="t2.jpg" alt="Vista de teja 2" class="gallery-image">
+                        <img src="t3.jpg" alt="Vista de teja 3" class="gallery-image">
+                        <!-- Se duplican las imágenes para un bucle infinito y suave -->
+                        <img src="t1.png" alt="Vista de teja 1" class="gallery-image">
+                        <img src="t2.jpg" alt="Vista de teja 2" class="gallery-image">
+                        <img src="t3.jpg" alt="Vista de teja 3" class="gallery-image">
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -614,26 +864,27 @@
         if (modelViewer && loadingPercentage) {
             const loadingOverlay = modelViewer.querySelector('.loading-overlay');
 
+            // Escuchar el progreso de carga para actualizar el porcentaje
             modelViewer.addEventListener('progress', (event) => {
-                // Calcula el porcentaje y lo muestra en el span
-                const percentage = Math.round(event.detail.totalProgress * 100);
-                loadingPercentage.textContent = `${percentage}%`;
+                const progress = event.detail.totalProgress;
+                const percentage = Math.round(progress * 100);
+                loadingPercentage.textContent = `Cargando... ${percentage}%`;
+            });
 
-                // Cuando la carga se completa, añade la clase para desvanecer el overlay
-                if (percentage === 100) {
+            // Escuchar cuando el modelo termine de cargar completamente
+            modelViewer.addEventListener('load', () => {
+                // Ocultar el overlay de carga cuando el modelo esté completamente listo
+                setTimeout(() => {
+                    loadingOverlay.classList.add('hide');
+                }, 300); // Pequeño delay para una transición suave
+            });
+
+            // También escuchar cuando el modelo esté listo para la interacción
+            modelViewer.addEventListener('model-visibility', (event) => {
+                if (event.detail.visible) {
+                    // El modelo es visible y listo, ocultar overlay de carga
                     loadingOverlay.classList.add('hide');
                 }
-            });
-
-            // Nos aseguramos de resetear el overlay cuando el modal se abre de nuevo
-            modelViewer.addEventListener('poster-dismissed', () => {
-                loadingOverlay.classList.remove('hide');
-                loadingPercentage.textContent = '0%';
-            });
-
-            // El evento 'load' es más fiable para saber cuándo la carga ha terminado realmente
-            modelViewer.addEventListener('load', () => {
-                loadingOverlay.classList.add('hide');
             });
         }
 
@@ -675,6 +926,12 @@
                 // --- ¡ESTA ES LA PARTE CLAVE! ---
                 // Si estamos abriendo el modal 3D, le decimos al visor que se muestre.
                 if (modal.id === 'modal-3d' && modelViewer) {
+                    // Resetear el overlay de carga antes de mostrar el modelo
+                    const loadingOverlay = modelViewer.querySelector('.loading-overlay');
+                    if (loadingOverlay) {
+                        loadingOverlay.classList.remove('hide');
+                    }
+                    
                     // Esto activa la carga y renderizado del modelo.
                     modelViewer.dismissPoster();
                 }
