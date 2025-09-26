@@ -401,6 +401,62 @@
             background: linear-gradient(45deg, #ff00ff, #8a2be2);
         }
 
+        /* --- Estilos para el Pie de Página (Footer) --- */
+        .site-footer {
+            background-color: #2c2c2c;
+            color: #ccc;
+            padding: 40px 20px;
+            text-align: center;
+        }
+
+        .footer-content {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .footer-content h3 {
+            font-family: 'Orbitron', sans-serif;
+            color: #fff;
+            margin-top: 0;
+            margin-bottom: 15px;
+            font-size: 1.5rem;
+        }
+
+        .footer-content p {
+            margin: 0 0 25px 0;
+            color: #aaa;
+            font-size: 1rem;
+            line-height: 1.6;
+        }
+
+        .location-links {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            flex-wrap: wrap;
+            margin-bottom: 30px;
+        }
+
+        .location-links a {
+            background-color: #444;
+            color: #fff;
+            padding: 10px 20px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: background-color 0.3s ease;
+        }
+
+        .location-links a:hover {
+            background-color: #8a2be2;
+        }
+
+        .footer-bottom {
+            border-top: 1px solid #444;
+            padding-top: 20px;
+            font-size: 0.9rem;
+            color: #777;
+        }
     </style>
 </head>
 <body>
@@ -464,8 +520,29 @@
             </li>
         </ul>
         <!-- Puedes cambiar el enlace de WhatsApp -->
-        <a href="https://wa.me/593995986366" target="_blank" class="cta-button">Solicitar Cotización</a>
+        <a href="https://wa.me/593995986366?text=porfavor%20ayudame%20con%20una%20cotizacion," target="_blank" class="cta-button">Solicitar Cotización</a>
     </section>
+
+    <footer class="site-footer">
+        <div class="footer-content">
+            <h3>Nuestras Ubicaciones</h3>
+            <div class="footer-locations">
+                <div class="location-item">
+                    <h4>Upcons Sur (La Ecuatoriana)</h4>
+                    <p>Av. La Ecuatoriana & Martín Santiago Icaza</p>
+                    <a href="https://maps.app.goo.gl/JX7EaUsHb8yT9vgA6?g_st=ac" target="_blank" class="location-links">Ver en Google Maps</a>
+                </div>
+                <div class="location-item">
+                    <h4>Upcons (Mariscal Sucre)</h4>
+                    <p>Av. Mariscal Sucre</p>
+                    <a href="https://maps.app.goo.gl/6yk2nNjZJQ1WWJDA7?g_st=ac" target="_blank" class="location-links">Ver en Google Maps</a>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 Teja Española PVC. Todos los derechos reservados.</p>
+            </div>
+        </div>
+    </footer>
 
     <!-- Ventana Modal para el Visor 3D (inicialmente oculta) -->
     <div id="modal-3d" class="modal-overlay">
