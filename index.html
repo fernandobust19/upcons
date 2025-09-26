@@ -10,7 +10,7 @@
     <!-- Carga de Google Fonts (Orbitron) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&family=Orbitron:wght@400;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
 
     <style>
         body {
@@ -27,13 +27,14 @@
 
         .main-title {
             font-family: 'Orbitron', sans-serif;
-            font-size: 2.5rem; /* Tamaño reducido */
+            font-size: 2rem; /* Tamaño ajustado */
             color: #333;
             margin: 0;
             font-weight: 700; /* Negrilla */
-            letter-spacing: 3px;
-            /* Animación de entrada */
-            animation: fadeInGlow 1.5s ease-out 0.5s forwards, color-border-glow 4s infinite ease-in-out;
+            letter-spacing: 2px;
+            /* Sombra sutil para un efecto elegante */
+            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.15);
+            animation: fadeInGlow 1.5s ease-out 0.5s forwards;
             opacity: 0; /* Inicia invisible */
         }
 
@@ -45,15 +46,6 @@
             to {
                 opacity: 1;
                 transform: translateY(0);
-            }
-        }
-
-        @keyframes color-border-glow {
-            0%, 100% {
-                text-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 15px #00f2ff, 0 0 20px #00f2ff;
-            }
-            50% {
-                text-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 15px #ff00ff, 0 0 20px #ff00ff;
             }
         }
 
@@ -81,6 +73,19 @@
             flex: 1;
             min-width: 300px;
         }
+        .text-container h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.6rem; /* Tamaño más pequeño */
+            color: #6a4a9c; /* Un morado elegante y más sutil */
+            margin-bottom: 15px;
+            line-height: 1.3;
+        }
+        .text-container p {
+            font-family: 'Lato', sans-serif; /* Fuente más elegante y legible */
+            font-size: 1.1rem; /* Tamaño ligeramente mayor */
+            line-height: 1.7; /* Mayor espacio entre líneas para facilitar la lectura */
+            color: #444; /* Un gris oscuro que es más suave que el negro puro */
+        }
         /* Estilos para el visor del modelo (ahora en el modal) */
         model-viewer {
             width: 100%;
@@ -89,6 +94,35 @@
             /* Estilo para la barra de progreso */
             --progress-bar-color: #00f2ff;
             border-radius: 12px;
+        }
+
+        /* --- Estilos para el Overlay de Carga del 3D --- */
+        .loading-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(255, 255, 255, 0.95);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            border-radius: 12px; /* Coincide con el visor */
+            transition: opacity 0.3s ease;
+        }
+
+        /* Clase para desvanecer el overlay de carga */
+        .loading-overlay.hide {
+            opacity: 0;
+            pointer-events: none; /* ¡Esta es la clave! Ignora los clics en el overlay oculto */
+        }
+
+        .loading-percentage {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2.5rem;
+            color: #8a2be2;
+            font-weight: bold;
         }
 
         /* --- Estilos para el botón y el panel de características --- */
@@ -109,10 +143,15 @@
             height: 100px; /* Tamaño reducido */
             border-radius: 50%;
             border: none;
+            padding: 5px; /* Pequeño padding para evitar que el texto toque los bordes */
+            display: flex; /* Para centrar el texto vertical y horizontalmente */
+            align-items: center;
+            justify-content: center;
+            text-align: center;
             /* Nuevos colores más vibrantes e "inteligentes" */
             background: linear-gradient(45deg, #00f2ff, #8a2be2, #ff00ff);
             color: white;
-            font-size: 14px; /* Fuente ajustada */
+            font-size: 13px; /* Fuente ajustada para que quepa el texto */
             font-weight: bold;
             cursor: pointer;
             transition: transform 0.2s ease;
@@ -177,6 +216,25 @@
             max-width: 600px;
         }
 
+        /* --- Estilos para Subtítulos Elegantes en Modales --- */
+        .modal-content h2 {
+            font-family: 'Playfair Display', serif;
+            text-align: center;
+            font-size: 2rem;
+            animation: subtle-glow 6s infinite alternate;
+        }
+
+        .modal-content h2::first-letter {
+            font-size: 1.2em;
+            color: #8a2be2;
+        }
+
+        @keyframes subtle-glow {
+            from { text-shadow: 0 0 7px rgba(0, 242, 255, 0.7); }
+            to { text-shadow: 0 0 7px rgba(255, 0, 255, 0.7); }
+        }
+
+
         .modal-close-btn {
             position: absolute;
             top: 15px;
@@ -191,6 +249,13 @@
             font-weight: bold;
             cursor: pointer;
             z-index: 1001;
+        }
+
+        .modal-image {
+            width: 100%;
+            height: auto;
+            border-radius: 10px;
+            margin-bottom: 15px;
         }
 
         /* Estilos para la lista de medidas en el modal */
@@ -212,33 +277,130 @@
             padding-left: 0;
         }
         .features-list li {
-            margin-bottom: 12px;
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 15px;
             line-height: 1.5;
         }
-        .features-list strong {
-            color: #8a2be2; /* Color a juego con el tema */
+        .features-list li::before {
+            content: '✔'; /* Icono de check */
+            color: #28a745; /* Verde para el check */
+            margin-right: 10px;
+            font-weight: bold;
         }
 
-        /* --- Estilos para la animación de texto tipo Karaoke --- */
-        @keyframes reveal-text {
+        /* Efecto de resaltado para palabras clave */
+        .features-list strong {
+            color: #333;
+            text-shadow: 0 0 4px rgba(138, 43, 226, 0.4);
+            transition: text-shadow 0.3s ease;
+        }
+
+        /* --- Estilos para la animación de aparición de texto --- */
+        @keyframes fadeInUp {
             from {
-                clip-path: inset(0 100% 0 0);
+                opacity: 0;
+                transform: translateY(20px);
             }
             to {
-                clip-path: inset(0 0 0 0);
+                opacity: 1;
+                transform: translateY(0);
             }
         }
 
-        .karaoke-item {
+        .reveal-item {
             opacity: 0; /* Inicia invisible */
         }
 
-        .karaoke-item.animate {
-            /* Aplica la animación pero la deja en pausa por defecto */
-            animation: reveal-text 2s ease-out forwards;
-            /* La animación se activa al añadir la clase */
-            opacity: 1;
+        .reveal-item.animate {
+            animation: fadeInUp 0.6s ease-out forwards;
         }
+
+        /* --- Nuevos Estilos para la Lista de Precios --- */
+        .pricing-section {
+            padding: 40px 20px;
+            background-color: #f9f9f9; /* Un fondo suave para la sección */
+        }
+
+        .section-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2rem;
+            margin-bottom: 30px;
+            text-align: center;
+            color: #333;
+        }
+
+        .price-list {
+            max-width: 800px;
+            margin: 0 auto;
+            list-style: none;
+            padding: 0;
+        }
+
+        .price-item {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            background-color: #fff;
+            border-radius: 15px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+            padding: 15px 20px;
+            margin-bottom: 15px;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .price-item:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.12);
+        }
+
+        .price-item-image {
+            width: 80px;
+            height: 80px;
+            object-fit: cover;
+            border-radius: 10px;
+        }
+
+        .price-item-info {
+            flex-grow: 1;
+        }
+
+        .price-item-info h4 {
+            margin: 0 0 5px 0;
+            font-size: 1.1rem;
+        }
+
+        .price-item-info p {
+            margin: 0;
+            color: #555;
+            font-size: 0.9rem;
+        }
+
+        .price-item-value {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #8a2be2;
+            white-space: nowrap;
+        }
+
+        .cta-button {
+            display: block;
+            max-width: 400px;
+            margin: 40px auto 0 auto;
+            padding: 15px;
+            background: linear-gradient(45deg, #8a2be2, #ff00ff);
+            color: white;
+            text-align: center;
+            text-decoration: none;
+            font-weight: bold;
+            border-radius: 8px;
+            transition: background-color 0.3s ease;
+        }
+
+        .cta-button:hover {
+            background: linear-gradient(45deg, #ff00ff, #8a2be2);
+        }
+
     </style>
 </head>
 <body>
@@ -267,12 +429,53 @@
         </div>
     </div>
 
+    <section class="pricing-section">
+        <h2 class="section-title">Nuestros Productos</h2>
+        <ul class="price-list">
+            <li class="price-item">
+                <img src="tejaventa.jpg" alt="Teja PVC" class="price-item-image">
+                <div class="price-item-info"><h4>Teja española 6.14 m. X 1.05</h4><p>Fondo Naranja</p></div>
+                <div class="price-item-value">$42.90</div>
+            </li>
+            <li class="price-item">
+                <img src="tejaventa.jpg" alt="Teja PVC" class="price-item-image">
+                <div class="price-item-info"><h4>Teja española 5.04 m. X 1.05</h4><p>Fondo Naranja</p></div>
+                <div class="price-item-value">$35.00</div>
+            </li>
+            <li class="price-item">
+                <img src="tejaventa.jpg" alt="Teja PVC" class="price-item-image">
+                <div class="price-item-info"><h4>Teja española 4.16 m. X 1.05</h4><p>Fondo Naranja</p></div>
+                <div class="price-item-value">$29.20</div>
+            </li>
+            <li class="price-item">
+                <img src="tejaventa.jpg" alt="Teja PVC" class="price-item-image">
+                <div class="price-item-info"><h4>Teja española 3.70 m. X 1.05</h4><p>Fondo Naranja</p></div>
+                <div class="price-item-value">$25.90</div>
+            </li>
+            <li class="price-item">
+                <img src="tejaventa.jpg" alt="Teja PVC" class="price-item-image">
+                <div class="price-item-info"><h4>Teja española 3.06 m. X 1.05</h4><p>Fondo Naranja</p></div>
+                <div class="price-item-value">$21.45</div>
+            </li>
+            <li class="price-item">
+                <img src="tejaventa.jpg" alt="Teja PVC" class="price-item-image">
+                <div class="price-item-info"><h4>Teja española 2.40 m. X 1.05</h4><p>Fondo Naranja</p></div>
+                <div class="price-item-value">$18.00</div>
+            </li>
+        </ul>
+        <!-- Puedes cambiar el enlace de WhatsApp -->
+        <a href="https://wa.me/593995986366" target="_blank" class="cta-button">Solicitar Cotización</a>
+    </section>
+
     <!-- Ventana Modal para el Visor 3D (inicialmente oculta) -->
     <div id="modal-3d" class="modal-overlay">
         <div class="modal-content modal-3d">
             <button id="modal-close" class="modal-close-btn">&times;</button>
             <!-- El visor 3D ahora vive aquí dentro -->
-            <model-viewer id="main-viewer" src="teja.glb" alt="Un modelo 3D de una teja" camera-controls auto-rotate exposure="1.2" reveal="manual"></model-viewer>
+            <model-viewer id="main-viewer" src="teja.glb" alt="Un modelo 3D de una teja" camera-controls auto-rotate exposure="1.2" reveal="manual">
+                <!-- Overlay de carga personalizado -->
+                <div class="loading-overlay" slot="progress-bar"><span class="loading-percentage">0%</span></div>
+            </model-viewer>
         </div>
     </div>
 
@@ -282,13 +485,13 @@
             <button id="features-close-btn" class="modal-close-btn">&times;</button>
             <h2>Características Principales</h2>
             <ul class="features-list">
-                <li class="karaoke-item"><strong>Ligereza:</strong> Son mucho más livianas que las tejas tradicionales, lo que facilita su instalación y reduce la carga sobre la estructura del techo.</li>
-                <li class="karaoke-item"><strong>Resistencia:</strong> Protegen eficazmente contra impactos, corrosión y rayos UV.</li>
-                <li class="karaoke-item"><strong>Aislamiento:</strong> Ofrecen aislamiento térmico y acústico, mejorando la eficiencia energética de su hogar.</li>
-                <li class="karaoke-item"><strong>Durabilidad:</strong> Su vida útil puede superar los 20 años, y algunos modelos garantizan la estabilidad del color por más de una década.</li>
-                <li class="karaoke-item"><strong>Bajo Mantenimiento:</strong> Su superficie repele la suciedad y no requiere cuidados especiales.</li>
-                <li class="karaoke-item"><strong>Impermeabilidad Total:</strong> Son completamente impermeables, evitando filtraciones de humedad.</li>
-                <li class="karaoke-item"><strong>Instalación Sencilla:</strong> Su manejo es fácil y pueden ser instaladas sobre estructuras de madera o metal.</li>
+                <li class="reveal-item"><strong>Ligereza:</strong> Son mucho más livianas que las tejas tradicionales, lo que facilita su instalación y reduce la carga sobre la estructura del techo.</li>
+                <li class="reveal-item"><strong>Resistencia:</strong> Protegen eficazmente contra impactos, corrosión y rayos UV.</li>
+                <li class="reveal-item"><strong>Aislamiento:</strong> Ofrecen aislamiento térmico y acústico, mejorando la eficiencia energética de su hogar.</li>
+                <li class="reveal-item"><strong>Durabilidad:</strong> Su vida útil puede superar los 20 años, y algunos modelos garantizan la estabilidad del color por más de una década.</li>
+                <li class="reveal-item"><strong>Bajo Mantenimiento:</strong> Su superficie repele la suciedad y no requiere cuidados especiales.</li>
+                <li class="reveal-item"><strong>Impermeabilidad Total:</strong> Son completamente impermeables, evitando filtraciones de humedad.</li>
+                <li class="reveal-item"><strong>Instalación Sencilla:</strong> Su manejo es fácil y pueden ser instaladas sobre estructuras de madera o metal.</li>
             </ul>
         </div>
     </div>
@@ -298,22 +501,68 @@
         <div class="modal-content modal-features">
             <button id="measures-close-btn" class="modal-close-btn">&times;</button>
             <h2>Medidas Disponibles</h2>
-            <p class="karaoke-item">Nuestras tejas se ofrecen en una variedad de longitudes para adaptarse a diferentes necesidades de construcción y minimizar los cortes y desperdicios:</p>
+            <p class="reveal-item">Nuestras tejas se ofrecen en una variedad de longitudes para adaptarse a diferentes necesidades de construcción y minimizar los cortes y desperdicios:</p>
             <ul class="measures-list">
-                <li class="karaoke-item">6.104 metros</li>
-                <li class="karaoke-item">5.01 metros</li>
-                <li class="karaoke-item">4.14 metros</li>
-                <li class="karaoke-item">3.70 metros (medida aproximada)</li>
-                <li class="karaoke-item">3.05 metros</li>
-                <li class="karaoke-item">2.40 metros</li>
+                <li class="reveal-item">Teja española 6.14 m. X 1.05</li>
+                <li class="reveal-item">Teja española 5.04 m. X 1.05</li>
+                <li class="reveal-item">Teja española 4.16 m. X 1.05</li>
+                <li class="reveal-item">Teja española 3.70 m. X 1.05</li>
+                <li class="reveal-item">Teja española 3.06 m. X 1.05</li>
+                <li class="reveal-item">Teja española 2.40 m. X 1.05</li>
             </ul>
-            <p class="karaoke-item"><strong>Nota:</strong> Todas las planchas tienen un ancho total de 1.05 metros y un espesor de 2.5 mm. El ancho útil es de aproximadamente 0.96 metros, después de considerar el solape para la instalación.</p>
+            <p class="reveal-item"><strong>Nota:</strong> Todas las planchas tienen un ancho total de 1.05 metros y un espesor de 2.5 mm. El ancho útil es de aproximadamente 0.96 metros, después de considerar el solape para la instalación.</p>
+        </div>
+    </div>
+
+    <!-- Ventana Modal para Instalación (inicialmente oculta) -->
+    <div id="install-modal" class="modal-overlay">
+        <div class="modal-content modal-features">
+            <button id="install-close-btn" class="modal-close-btn">&times;</button>
+            <h2>Instalación de la Cubierta</h2>
+            <img src="instalacion.jpg" alt="Proceso de instalación de tejas de PVC" class="modal-image">
+            <p class="reveal-item">La instalación de la cubierta comienza una vez que la estructura principal de columnas y vigas está firmemente montada. Esta fase se centra en el sistema de soporte y la fijación de las tejas para proteger el área de la intemperie.</p>
+            <ul class="features-list">
+                <li class="reveal-item"><strong>Montaje de las correas:</strong> Las correas metálicas se instalan sobre las vigas principales. Estas piezas horizontales son cruciales, ya que forman la base directa para la cubierta y distribuyen el peso hacia la estructura.</li>
+                <li class="reveal-item"><strong>Preparación de la cubierta:</strong> Se procede a la colocación de las tejas sobre las correas. La instalación debe empezar en la parte más baja del techo y avanzar hacia la cumbrera (la parte más alta), superponiendo las piezas para garantizar una correcta evacuación del agua.</li>
+                <li class="reveal-item"><strong>Fijación de la cubierta:</strong> Cada teja o lámina se debe fijar de manera segura a las correas utilizando tornillos o ganchos adecuados, especialmente en áreas propensas a vientos fuertes. Se presta especial atención al sellado de los puntos de unión para asegurar una protección completa contra filtraciones.</li>
+            </ul>
         </div>
     </div>
 
     <script>
+        // --- Lógica para el contador de carga del 3D ---
+        const modelViewer = document.querySelector('#main-viewer');
+        const loadingPercentage = document.querySelector('.loading-percentage');
+
+        if (modelViewer && loadingPercentage) {
+            const loadingOverlay = modelViewer.querySelector('.loading-overlay');
+
+            modelViewer.addEventListener('progress', (event) => {
+                // Calcula el porcentaje y lo muestra en el span
+                const percentage = Math.round(event.detail.totalProgress * 100);
+                loadingPercentage.textContent = `${percentage}%`;
+
+                // Cuando la carga se completa, añade la clase para desvanecer el overlay
+                if (percentage === 100) {
+                    loadingOverlay.classList.add('hide');
+                }
+            });
+
+            // Nos aseguramos de resetear el overlay cuando el modal se abre de nuevo
+            modelViewer.addEventListener('poster-dismissed', () => {
+                loadingOverlay.classList.remove('hide');
+                loadingPercentage.textContent = '0%';
+            });
+
+            // El evento 'load' es más fiable para saber cuándo la carga ha terminado realmente
+            modelViewer.addEventListener('load', () => {
+                loadingOverlay.classList.add('hide');
+            });
+        }
+
         // Función genérica para controlar los modales
         function setupModal(buttonId, modalId, closeButtonId) {
+            let observer; // Variable para guardar el Intersection Observer
             const modelViewer = document.querySelector('#main-viewer'); // Seleccionamos el visor 3D
             const openButton = document.getElementById(buttonId);
             const modal = document.getElementById(modalId);
@@ -324,13 +573,27 @@
                 // Hacemos visible el modal
                 modal.classList.add('visible');
 
-                // Activa la animación de karaoke para los elementos de texto
-                const karaokeItems = modal.querySelectorAll('.karaoke-item');
-                karaokeItems.forEach((item, index) => {
-                    // Aplicamos un retraso escalonado a cada elemento
-                    item.style.animationDelay = `${index * 0.5 + 0.3}s`;
-                    item.classList.add('animate');
-                });
+                // --- Nueva Lógica con Intersection Observer ---
+                // Opciones para el observer: se activa cuando el 20% del elemento es visible
+                const options = {
+                    root: modal.querySelector('.modal-content'), // Observa el scroll dentro del modal
+                    rootMargin: '0px',
+                    threshold: 0.2
+                };
+
+                observer = new IntersectionObserver((entries, observer) => {
+                    entries.forEach(entry => {
+                        // Si el elemento está en la pantalla
+                        if (entry.isIntersecting) {
+                            entry.target.classList.add('animate'); // Añade la clase para animar
+                            observer.unobserve(entry.target); // Deja de observar este elemento
+                        }
+                    });
+                }, options);
+
+                // Le decimos al observer qué elementos vigilar
+                const itemsToReveal = modal.querySelectorAll('.reveal-item');
+                itemsToReveal.forEach(item => observer.observe(item));
 
                 // --- ¡ESTA ES LA PARTE CLAVE! ---
                 // Si estamos abriendo el modal 3D, le decimos al visor que se muestre.
@@ -343,11 +606,17 @@
             const closeModal = () => {
                 modal.classList.remove('visible');
 
-                // Al cerrar, quitamos la clase de animación para que pueda volver a ejecutarse
-                const karaokeItems = modal.querySelectorAll('.karaoke-item');
-                karaokeItems.forEach(item => {
+                // Resetea la animación al cerrar
+                const itemsToReveal = modal.querySelectorAll('.reveal-item');
+                itemsToReveal.forEach(item => {
                     item.classList.remove('animate');
+                    item.style.animationDelay = ''; // Limpia el retraso
                 });
+
+                // Desconecta el observer para limpiar recursos
+                if (observer) {
+                    observer.disconnect();
+                }
 
                 if (modal.id === 'modal-3d' && modelViewer) {
                     modelViewer.showPoster();
@@ -380,7 +649,7 @@
         setupModal('measures-btn', 'measures-modal', 'measures-close-btn');
 
         // Configurar el modal de Instalación (actualmente no hace nada)
-        // setupModal('install-btn', 'install-modal', 'install-close-btn');
+        setupModal('install-btn', 'install-modal', 'install-close-btn');
     </script>
 </body>
 </html>
