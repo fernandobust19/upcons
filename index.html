@@ -114,7 +114,7 @@
         .image-buttons-wrapper {
             display: flex;
             gap: 15px;
-            align-items: stretch; /* Estira los elementos para que tengan la misma altura */
+            align-items: flex-start;
             flex: 1;
             min-width: 300px;
         }
@@ -123,7 +123,7 @@
             flex: 1;
             /* Estilos para el área de contenido dinámico */
             position: relative;
-            min-height: 450px; /* Altura mínima para evitar saltos de layout */
+            height: 500px; /* Altura fija para que coincida con los botones */
             background-color: #f8f9fa;
             padding: 15px;
             border-radius: 12px;
@@ -150,7 +150,6 @@
         /* Contenedor para el texto */
         .text-container {
             flex: 2; /* Más espacio para el texto */
-            min-width: 300px;
         }
         .text-container h1 {
             font-family: 'Lato', sans-serif; /* Fuente más moderna y atractiva */
@@ -368,7 +367,6 @@
 
         .measures-text {
             flex: 2; /* Ocupa más espacio */
-            min-width: 250px;
         }
 
         .measures-gallery {
