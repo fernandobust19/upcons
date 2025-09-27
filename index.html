@@ -13,9 +13,18 @@
     <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&family=Orbitron:wght@400;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
 
     <style>
-        body {
+        html, body {
             font-family: sans-serif;
             margin: 0;
+            padding: 0;
+            overflow-x: hidden; /* Evita scroll horizontal */
+            box-sizing: border-box;
+            width: 100%;
+            max-width: 100vw; /* No exceder el ancho de la ventana */
+        }
+        
+        *, *::before, *::after {
+            box-sizing: border-box; /* Asegura que padding y border se incluyan en el ancho */
         }
 
         /* --- Estilos para el Header y Título Principal --- */
@@ -84,11 +93,29 @@
         @media (max-width: 768px) {
             .main-container {
                 flex-direction: column; /* Apila los elementos principales verticalmente */
+                padding: 0 10px; /* Padding más pequeño en móviles */
             }
 
             .main-title {
                 font-size: 1.5rem; /* Tamaño más pequeño para móviles */
                 letter-spacing: 2px; /* Menos espaciado para móviles */
+            }
+            
+            /* Reorganizar el layout imagen-botones en móviles */
+            .image-buttons-wrapper {
+                flex-direction: column; /* Apila imagen y botones verticalmente */
+                gap: 15px;
+                min-width: 0; /* Permitir que se encoja */
+            }
+            
+            /* Botones en fila horizontal en móviles */
+            .features-button-container {
+                flex-direction: row; /* Botones horizontales */
+                flex-wrap: wrap; /* Permite que se envuelvan */
+                justify-content: center; /* Centrar botones */
+                gap: 8px; /* Espacio más pequeño */
+                max-width: 100%; /* Usar todo el ancho disponible */
+                order: 2; /* Los botones van después de la imagen */
             }
 
             .price-list {
@@ -102,8 +129,10 @@
             
             /* Adjust content panel height for mobile */
             .image-container {
-                height: 400px; /* Altura reducida para móviles */
-                min-width: 350px; /* Mantener ancho mínimo en tablet */
+                height: 400px; /* Altura ajustada para móviles */
+                min-width: 0; /* Permitir que se encoja */
+                max-width: 100%; /* Usar todo el ancho disponible */
+                order: 1; /* La imagen va primero */
             }
             
             .content-panel {
@@ -111,16 +140,34 @@
             }
             
             .text-container {
-                min-width: 280px; /* Ancho mínimo reducido para tablet */
-                max-width: none; /* Sin límite máximo en tablet */
+                min-width: 0; /* Permitir que se encoja completamente */
+                max-width: 100%; /* Usar todo el ancho disponible */
+                order: 3; /* El texto va al final */
+            }
+
+            /* Botones más pequeños en tablet */
+            .features-button {
+                width: 50px;
+                height: 50px;
+                font-size: 7px;
+            }
+            
+            /* Remover restricción de ancho del contenedor de botones */
+            .features-button-container {
+                max-width: 100%;
+                width: auto;
             }
         }
 
         /* Media query adicional para pantallas muy pequeñas */
         @media (max-width: 480px) {
+            .main-container {
+                padding: 0 5px; /* Padding aún más pequeño */
+            }
+            
             .image-container {
-                height: 350px; /* Altura aún más pequeña para pantallas muy pequeñas */
-                min-width: 280px; /* Ancho mínimo para móviles muy pequeños */
+                height: 350px; /* Altura más pequeña para móviles */
+                min-width: 0;
             }
             
             .content-panel {
@@ -128,7 +175,25 @@
             }
             
             .text-container {
-                min-width: 250px; /* Ancho mínimo para móviles muy pequeños */
+                min-width: 0; /* Sin restricción de ancho mínimo */
+            }
+            
+            /* Botones aún más pequeños en móviles */
+            .features-button {
+                width: 42px;
+                height: 42px;
+                font-size: 6px;
+            }
+            
+            /* Título más pequeño en móviles */
+            .main-title {
+                font-size: 1.2rem;
+                letter-spacing: 1px;
+            }
+            
+            /* Reducir gap entre botones */
+            .features-button-container {
+                gap: 5px;
             }
         }
 
