@@ -292,9 +292,9 @@
         }
         /* Contenedor para la imagen estática */
         .image-container {
-            flex: 1.5; /* Menos espacio para dar más room a botones */
-            min-width: 200px; /* Ancho mínimo más pequeño */
-            max-width: 55%; /* Máximo más pequeño */
+            flex: 1.8; /* Más espacio al mover botones al borde */
+            min-width: 220px; /* Ancho mínimo un poco más grande */
+            max-width: 62%; /* Máximo un poco más grande */
             /* Estilos para el área de contenido dinámico */
             position: relative;
             height: 500px; /* Altura fija para que coincida con los botones */
@@ -496,17 +496,17 @@
             flex-direction: column; /* Apila los botones verticalmente */
             gap: 10px; /* Espacio un poco más grande */
             flex-shrink: 0; /* Evita que el contenedor de botones se encoja */
-            width: 80px; /* Ancho aumentado para los botones */
+            width: 65px; /* Ancho reducido para botones más pequeños */
             justify-content: flex-start;
-            margin-right: 15px; /* Mover botones más a la izquierda */
+            margin-right: 0; /* Sin margen, pegados al borde derecho */
             align-items: center;
         }
 
         /* Estilo del botón de características */
         .features-button {
             position: relative;
-            width: 70px; /* Tamaño aumentado */
-            height: 70px; /* Tamaño aumentado */
+            width: 55px; /* Tamaño más pequeño */
+            height: 55px; /* Tamaño más pequeño */
             border-radius: 50%;
             border: none;
             padding: 5px; /* Pequeño padding para evitar que el texto toque los bordes */
@@ -516,7 +516,7 @@
             text-align: center;
             background: linear-gradient(45deg, #00bfa5, #01579b); /* Gradiente elegante de verde-azulado a azul oscuro */
             color: white;
-            font-size: 9px; /* Fuente un poco más grande */
+            font-size: 7px; /* Fuente más pequeña */
             font-weight: bold;
             cursor: pointer;
             transition: transform 0.2s ease;
