@@ -129,15 +129,25 @@
             }
             
             /* Adjust content panel height for mobile */
+            .main-container {
+                gap: 15px; /* Gap más pequeño en tablet */
+            }
+            
+            .image-buttons-wrapper {
+                gap: 10px; /* Gap más pequeño */
+                min-width: 0; /* Sin restricción */
+            }
+            
             .image-container {
-                height: 400px; /* Altura ajustada para móviles */
+                height: 380px; /* Altura ajustada para tablet */
                 min-width: 0; /* Permitir que se encoja */
                 flex: 1; /* Ocupa el espacio restante */
                 order: 1; /* La imagen va primero */
+                padding: 12px; /* Padding reducido */
             }
             
             .content-panel {
-                height: 370px; /* Altura ajustada para móviles */
+                height: 350px; /* Altura ajustada para tablet */
             }
             
             .text-container {
@@ -148,14 +158,15 @@
 
             /* Botones más pequeños en tablet */
             .features-button {
-                width: 50px;
-                height: 50px;
-                font-size: 7px;
+                width: 45px; /* Más pequeños */
+                height: 45px; /* Más pequeños */
+                font-size: 6px; /* Texto más pequeño */
             }
             
             /* Remover restricción de ancho del contenedor de botones */
             .features-button-container {
-                width: 60px; /* Ancho fijo para la columna de botones */
+                width: auto; /* Ancho automático */
+                gap: 6px; /* Gap más pequeño */
             }
         }
 
@@ -163,37 +174,59 @@
         @media (max-width: 480px) {
             .main-container {
                 padding: 0 5px; /* Padding aún más pequeño */
+                gap: 10px; /* Gap más pequeño */
+                min-width: 280px; /* Ancho mínimo más pequeño */
+            }
+            
+            .image-buttons-wrapper {
+                gap: 8px; /* Gap más pequeño entre imagen y botones */
+                min-width: 0; /* Sin restricción de ancho mínimo */
             }
             
             .image-container {
-                height: 350px; /* Altura más pequeña para móviles */
+                height: 300px; /* Altura más pequeña para móviles */
                 min-width: 0;
+                padding: 10px; /* Padding reducido */
             }
             
             .content-panel {
-                height: 320px; /* Altura ajustada para pantallas muy pequeñas */
+                height: 280px; /* Altura ajustada para pantallas muy pequeñas */
+                padding-right: 3px; /* Padding más pequeño para scroll */
             }
             
             .text-container {
                 min-width: 0; /* Sin restricción de ancho mínimo */
+                padding: 0 5px; /* Padding pequeño */
             }
             
             /* Botones aún más pequeños en móviles */
             .features-button {
-                width: 42px;
-                height: 42px;
-                font-size: 6px;
+                width: 35px; /* Más pequeños */
+                height: 35px; /* Más pequeños */
+                font-size: 5px; /* Texto más pequeño */
+                padding: 2px; /* Padding más pequeño */
             }
             
             /* Título más pequeño en móviles */
             .main-title {
-                font-size: 1.2rem;
+                font-size: 1rem; /* Aún más pequeño */
                 letter-spacing: 1px;
+                padding: 5px 10px; /* Padding más pequeño */
             }
             
             /* Reducir gap entre botones */
             .features-button-container {
-                gap: 5px;
+                gap: 4px; /* Gap muy pequeño */
+                padding: 0; /* Sin padding */
+            }
+            
+            /* Header más compacto */
+            .page-header {
+                padding: 10px 5px; /* Padding más pequeño */
+            }
+            
+            .header-logo {
+                height: 60px; /* Logo más pequeño */
             }
         }
 
@@ -203,8 +236,8 @@
             flex-wrap: wrap; /* Permite que los elementos se apilen en pantallas pequeñas */
             gap: 20px; /* Espacio entre el visor y el texto */
             align-items: flex-start; /* Alinea los items al inicio */
-            padding: 0 20px; /* Añade el padding lateral que antes estaba en el body */
-            min-width: 320px; /* Ancho mínimo del contenedor principal */
+            padding: 0 15px; /* Padding más pequeño por defecto */
+            min-width: 280px; /* Ancho mínimo más pequeño */
             max-width: 1400px; /* Ancho máximo para no ser demasiado ancho en pantallas grandes */
             margin: 0 auto; /* Centrar el contenedor */
         }
@@ -212,15 +245,15 @@
         /* Contenedor que agrupa la imagen y los botones */
         .image-buttons-wrapper {
             display: flex;
-            gap: 15px;
+            gap: 12px; /* Gap más pequeño */
             align-items: flex-start;
             flex: 1;
-            min-width: 300px;
+            min-width: 250px; /* Ancho mínimo más pequeño */
         }
         /* Contenedor para la imagen estática */
         .image-container {
             flex: 2; /* Aumentado para darle más espacio */
-            min-width: 450px; /* Ancho mínimo más grande para evitar que se haga pequeño */
+            min-width: 200px; /* Ancho mínimo más pequeño para móviles */
             max-width: 70%; /* Máximo para que no ocupe toda la pantalla */
             /* Estilos para el área de contenido dinámico */
             position: relative;
@@ -363,9 +396,9 @@
         .features-button-container {
             display: flex;
             flex-direction: column; /* Apila los botones verticalmente */
-            gap: 10px; /* Espacio ajustado para que quepan más botones */
+            gap: 8px; /* Espacio más pequeño */
             flex-shrink: 0; /* Evita que el contenedor de botones se encoja */
-            width: 65px; /* Ancho fijo igual al de los botones para estabilizar el layout */
+            width: 55px; /* Ancho más pequeño */
             justify-content: flex-start;
             align-items: center;
         }
@@ -373,8 +406,8 @@
         /* Estilo del botón de características */
         .features-button {
             position: relative;
-            width: 65px; /* Tamaño más pequeño */
-            height: 65px; /* Tamaño más pequeño */
+            width: 50px; /* Tamaño más pequeño por defecto */
+            height: 50px; /* Tamaño más pequeño por defecto */
             border-radius: 50%;
             border: none;
             padding: 5px; /* Pequeño padding para evitar que el texto toque los bordes */
