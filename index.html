@@ -292,9 +292,9 @@
         }
         /* Contenedor para la imagen estática */
         .image-container {
-            flex: 1.8; /* Más espacio al mover botones al borde */
-            min-width: 220px; /* Ancho mínimo un poco más grande */
-            max-width: 62%; /* Máximo un poco más grande */
+            flex: 2; /* Aún más espacio aprovechando botones en el borde */
+            min-width: 240px; /* Ancho mínimo un poco más grande */
+            max-width: 68%; /* Máximo más grande sin exceder la pantalla */
             /* Estilos para el área de contenido dinámico */
             position: relative;
             height: 500px; /* Altura fija para que coincida con los botones */
@@ -498,7 +498,8 @@
             flex-shrink: 0; /* Evita que el contenedor de botones se encoja */
             width: 65px; /* Ancho reducido para botones más pequeños */
             justify-content: flex-start;
-            margin-right: 0; /* Sin margen, pegados al borde derecho */
+            margin-left: auto; /* Empuja los botones hacia la derecha */
+            margin-right: 5px; /* Pequeño margen para no tocar el borde */
             align-items: center;
         }
 
