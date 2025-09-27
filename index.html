@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <title>Mi Página Web</title>
 
     <!-- Carga el componente <model-viewer> de Google -->
@@ -80,6 +80,17 @@
             }
         }
 
+        /* --- Estilos Responsivos para Móviles --- */
+        @media (max-width: 768px) {
+            .main-container {
+                flex-direction: column; /* Apila los elementos principales verticalmente */
+            }
+
+            .price-list {
+                grid-template-columns: 1fr; /* Una sola columna en móviles */
+            }
+        }
+
         /* Contenedor principal que usa Flexbox para el diseño */
         .main-container {
             display: flex;
@@ -93,7 +104,7 @@
         .image-buttons-wrapper {
             display: flex;
             gap: 15px;
-            align-items: flex-start;
+            align-items: stretch; /* Estira los elementos para que tengan la misma altura */
             flex: 1;
             min-width: 300px;
         }
@@ -102,7 +113,7 @@
             flex: 1;
             /* Estilos para el área de contenido dinámico */
             position: relative;
-            height: 500px; /* Altura fija para que coincida con los botones */
+            min-height: 450px; /* Altura mínima para evitar saltos de layout */
             background-color: #f8f9fa;
             padding: 15px;
             border-radius: 12px;
@@ -193,7 +204,7 @@
         .features-button-container {
             display: flex;
             flex-direction: column; /* Apila los botones verticalmente */
-            gap: 15px; /* Espacio ajustado para que quepan más botones */
+            gap: 10px; /* Espacio ajustado para que quepan más botones */
             flex-shrink: 0; /* Evita que el contenedor de botones se encoja */
             justify-content: flex-start;
             align-items: center;
@@ -202,8 +213,8 @@
         /* Estilo del botón de características */
         .features-button {
             position: relative;
-            width: 70px; /* Tamaño más pequeño */
-            height: 70px; /* Tamaño más pequeño */
+            width: 65px; /* Tamaño más pequeño */
+            height: 65px; /* Tamaño más pequeño */
             border-radius: 50%;
             border: none;
             padding: 5px; /* Pequeño padding para evitar que el texto toque los bordes */
@@ -281,6 +292,7 @@
         .modal-image {
             float: right; /* Flota la imagen a la derecha */
             width: 35%; /* Ancho reducido */
+            min-width: 100px; /* Ancho mínimo para evitar que se colapse */
             max-width: 120px; /* Ancho máximo reducido */
             margin-left: 15px; /* Espacio a la izquierda de la imagen */
             border-radius: 8px;
@@ -290,7 +302,7 @@
         /* Estilos para la lista de medidas en el modal */
         .measures-list {
             list-style-type: none;
-            padding-left: 0;
+            padding: 0;
         }
         .measures-list li {
             background-color: #f0f0f0;
@@ -304,6 +316,12 @@
         #install-content p, #install-content .measures-list li {
             font-size: 0.9rem; /* Fuente más pequeña para el texto de instalación */
             line-height: 1.5;
+        }
+
+        /* Quita la línea vertical solo en la lista de garantía */
+        #warranty-content .measures-list li {
+            border-left: none;
+            padding-left: 8px; /* Mantiene un padding consistente */
         }
 
         /* Estilos para las imágenes de accesorios */
@@ -359,10 +377,10 @@
         /* Estilos para la lista de características */
         .features-list {
             display: grid; /* Usamos grid para un diseño de tarjetas moderno */
-            grid-template-columns: 1fr 1fr; /* Forzamos a dos columnas para un diseño más compacto */
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); /* Columnas responsivas */
             gap: 10px; /* Espacio reducido entre tarjetas */
             list-style-type: none;
-            padding-left: 0;
+            padding: 0;
         }
         .features-list li {
             background-color: #f8f9fa; /* Fondo suave para la tarjeta */
