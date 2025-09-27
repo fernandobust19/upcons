@@ -20,44 +20,63 @@
 
         /* --- Estilos para el Header y Título Principal --- */
         .page-header {
-            display: flex;
-            flex-direction: column; /* Apila el logo y el título verticalmente */
-            align-items: center;
-            justify-content: center;
-            gap: 10px; /* Reduce el espacio entre logo y título */
             text-align: center;
-            margin-bottom: 40px; /* Aumenta el margen inferior */
-            padding: 20px 10px; /* Añade padding */
+            padding: 15px 0;
             background: linear-gradient(to bottom, #e0f7fa 0%, #ffffff 100%); /* Degradado azul sutil */
-            border-radius: 0 0 30px 30px; /* Bordes redondeados inferiores */
+        }
+
+        /* Nuevo contenedor para el título que ocupa todo el ancho */
+        .title-bar {
+            background: linear-gradient(90deg, #1e3c72, #2a5298); /* Gradiente azul oscuro */
+            padding: 25px 20px;
+            text-align: center;
+            position: relative;
+            overflow: hidden; /* Para contener el efecto de luz */
+            margin-bottom: 40px;
         }
 
         .main-title {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 1.5rem;
-            color: #333;
+            font-family: 'Orbitron', sans-serif; /* Fuente tecnológica */
+            font-size: 2rem; /* Tamaño de fuente reducido */
             margin: 0;
-            font-weight: 700; /* Negrilla */
-            letter-spacing: 2px;
-            /* Sombra sutil para un efecto elegante */
-            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.15);
-            animation: fadeInGlow 1.5s ease-out 0.5s forwards;
-            opacity: 0; /* Inicia invisible */
+            font-weight: 700;
+            letter-spacing: 4px;
+            color: #fff;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.5), 0 0 20px rgba(0, 242, 255, 0.5);
+            position: relative; /* Para que el efecto de luz pase por detrás */
+            z-index: 1;
+        }
+
+        /* Efecto de barrido de luz "IA" */
+        .title-bar::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -150%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.25), transparent);
+            transform: skewX(-25deg);
+            animation: light-sweep-ai 6s linear infinite;
+            z-index: 0;
         }
 
         .header-logo {
             height: 80px; /* Altura del logo */
             width: auto;
+            display: block;
+            margin: 0 auto;
         }
 
-        @keyframes fadeInGlow {
-            from {
-                opacity: 0;
-                transform: translateY(-20px);
+        @keyframes light-sweep-ai {
+            0% {
+                left: -150%;
             }
-            to {
-                opacity: 1;
-                transform: translateY(0);
+            50% {
+                left: 150%;
+            }
+            100% {
+                left: 150%;
             }
         }
 
@@ -80,10 +99,28 @@
         }
         /* Contenedor para la imagen estática */
         .image-container {
-            flex: 1; /* Ocupa el espacio disponible */
-            max-height: 60vh;
+            flex: 1;
+            /* Estilos para el área de contenido dinámico */
+            position: relative;
+            height: 500px; /* Altura fija para que coincida con los botones */
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 12px;
+            overflow-y: auto; /* Scroll si el contenido es muy largo */
+            box-shadow: inset 0 2px 8px rgba(0,0,0,0.05);
         }
-        .static-image {
+
+        /* Paneles de contenido que se mostrarán/ocultarán */
+        .content-panel {
+            display: none; /* Ocultos por defecto */
+            width: 100%;
+            height: 100%;
+        }
+
+        .content-panel.active {
+            display: block; /* El panel activo se muestra */
+        }
+        .static-image, .modal-image {
             width: 100%;
             height: auto;
             border-radius: 12px;
@@ -118,30 +155,26 @@
         /* Estilos para el visor del modelo (ahora en el modal) */
         model-viewer {
             width: 100%;
-            height: 100%;
+            height: 420px; /* Altura fija para el visor en el panel */
             --poster-color: transparent; /* Fondo transparente mientras carga */
             /* Estilo para la barra de progreso */
             --progress-bar-color: #00f2ff;
+            --progress-mask: transparent; /* Oculta la barra de progreso por defecto */
             border-radius: 12px;
         }
 
         /* --- Estilos para el Overlay de Carga del 3D --- */
         .loading-overlay {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(255, 255, 255, 0.95);
+            /* Ajustado para el nuevo contenedor */
+            position: relative;
+            height: 420px;
+            background-color: #f8f9fa;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            border-radius: 12px; /* Coincide con el visor */
-            transition: opacity 0.3s ease;
         }
 
-        /* Clase para desvanecer el overlay de carga */
         .loading-overlay.hide {
             display: none; /* Oculta completamente el elemento */
             pointer-events: none; /* ¡Esta es la clave! Ignora los clics en el overlay oculto */
@@ -160,7 +193,7 @@
         .features-button-container {
             display: flex;
             flex-direction: column; /* Apila los botones verticalmente */
-            gap: 10px; /* Espacio más pequeño entre botones */
+            gap: 15px; /* Espacio ajustado para que quepan más botones */
             flex-shrink: 0; /* Evita que el contenedor de botones se encoja */
             justify-content: flex-start;
             align-items: center;
@@ -208,67 +241,23 @@
             transform: scale(1.05);
         }
 
-        /* Panel de detalles, oculto por defecto */
-        /* --- Estilos Genéricos para Modales --- */
-        .modal-overlay {
-            position: fixed; /* Se superpone a todo */
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.8); /* Fondo oscuro semitransparente */
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 1000;
-            opacity: 0; /* Oculto por defecto */
-            visibility: hidden;
-            transition: opacity 0.3s ease, visibility 0.3s ease;
-        }
-
-        .modal-overlay.visible {
-            opacity: 1;
-            visibility: visible;
-        }
-
-        .modal-content {
-            position: relative;
-            width: 90%;
-            background-color: #fff;
-            border-radius: 15px;
-            padding: 20px;
-            max-height: 90vh;
-            overflow-y: auto;
-        }
-
-        /* Estilos específicos para el modal 3D */
-        .modal-content.modal-3d {
-            width: 80%;
-            height: 80%;
-            max-width: 900px;
-        }
-        /* Estilos específicos para el modal de características */
-        .modal-content.modal-features {
-            max-width: 600px;
-        }
-
         /* --- Estilos para Subtítulos Elegantes en Modales --- */
-        .modal-content h2 {
+        .content-panel h2 {
             position: relative; /* Necesario para el efecto de luz */
             font-family: 'Playfair Display', serif;
-            text-align: center;
-            font-size: 2rem;
+            text-align: center; 
+            font-size: 1.5rem; /* Título más pequeño para el nuevo contenedor */
             color: #fff; /* Texto blanco para contraste */
             /* Nuevo fondo oscuro y elegante */
             background: radial-gradient(ellipse at center, #333 0%, #111 100%);
             padding: 15px 20px;
             border-radius: 8px;
             overflow: hidden; /* Oculta el pseudo-elemento fuera del título */
-            margin-bottom: 25px;
+            margin-bottom: 15px; /* Margen reducido */
         }
 
-        /* Pseudo-elemento para crear un efecto de luz tipo "aurora" */
-        .modal-content h2::before {
+        /* Pseudo-elemento para el título */
+        .content-panel h2::before {
             content: '';
             position: absolute;
             top: -50%;
@@ -289,29 +278,12 @@
             }
         }
 
-        .modal-close-btn {
-            position: absolute;
-            top: 15px;
-            right: 15px;
-            background: #222; /* Ligeramente más oscuro */
-            color: white;
-            border: none;
-            border-radius: 50%;
-            width: 30px;
-            height: 30px;
-            font-size: 20px;
-            font-weight: bold;
-            cursor: pointer;
-            z-index: 1001;
-        }
-
         .modal-image {
             float: right; /* Flota la imagen a la derecha */
-            width: 45%; /* Reduce el ancho de la imagen */
-            max-width: 250px; /* Ancho máximo para que no sea demasiado grande */
+            width: 35%; /* Ancho reducido */
+            max-width: 120px; /* Ancho máximo reducido */
             margin-left: 15px; /* Espacio a la izquierda de la imagen */
-            margin-bottom: 10px; /* Espacio debajo de la imagen */
-            border-radius: 10px;
+            border-radius: 8px;
             box-shadow: 0 4px 15px rgba(0,0,0,0.1); /* Sombra sutil */
         }
 
@@ -322,10 +294,25 @@
         }
         .measures-list li {
             background-color: #f0f0f0;
-            padding: 10px;
+            padding: 8px; /* Padding reducido */
             margin-bottom: 8px;
             border-radius: 5px;
             border-left: 4px solid #8a2be2;
+        }
+
+        /* Estilos específicos para el panel de instalación */
+        #install-content p, #install-content .measures-list li {
+            font-size: 0.9rem; /* Fuente más pequeña para el texto de instalación */
+            line-height: 1.5;
+        }
+
+        /* Estilos para las imágenes de accesorios */
+        .accessory-image {
+            width: 100%;
+            max-width: 250px;
+            height: auto;
+            border-radius: 8px;
+            margin: 10px 0;
         }
 
         /* --- Estilos para el layout del modal de medidas --- */
@@ -342,10 +329,10 @@
         }
 
         .measures-gallery {
-            flex: 1; /* Ocupa menos espacio */
-            min-width: 150px;
-            position: relative; /* Para posicionar las imágenes */
-            height: 400px; /* Altura aumentada para el carrusel vertical */
+            flex: 1;
+            min-width: 150px; /* Ancho mínimo reducido */
+            position: relative;
+            height: 350px; /* Altura reducida para un carrusel más pequeño */
             border-radius: 10px;
             overflow: hidden;
             box-shadow: 0 4px 15px rgba(0,0,0,0.1);
@@ -353,38 +340,33 @@
 
         .gallery-inner {
             /* Contenedor que se animará verticalmente */
-            animation: vertical-scroll 12s linear infinite;
+            animation: vertical-scroll 15s linear infinite;
         }
 
         .measures-gallery .gallery-image {
-            /* Las imágenes ahora se apilan verticalmente */
             display: block;
             width: 100%;
             height: auto;
             object-fit: cover;
-            margin-bottom: 10px; /* Espacio entre imágenes */
+            margin-bottom: 10px;
         }
 
         @keyframes vertical-scroll {
-            from {
-                transform: translateY(0);
-            }
-            to {
-                transform: translateY(-50%); /* Desplaza la mitad del contenido para un bucle perfecto */
-            }
+            from { transform: translateY(0); }
+            to { transform: translateY(-50%); }
         }
 
         /* Estilos para la lista de características */
         .features-list {
             display: grid; /* Usamos grid para un diseño de tarjetas moderno */
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /* Columnas responsivas */
-            gap: 20px; /* Espacio entre tarjetas */
+            grid-template-columns: 1fr 1fr; /* Forzamos a dos columnas para un diseño más compacto */
+            gap: 10px; /* Espacio reducido entre tarjetas */
             list-style-type: none;
             padding-left: 0;
         }
         .features-list li {
             background-color: #f8f9fa; /* Fondo suave para la tarjeta */
-            padding: 20px;
+            padding: 10px; /* Padding más reducido */
             border-radius: 10px;
             border-left: 5px solid #00bfa5; /* Acento de color del tema */
             box-shadow: 0 4px 15px rgba(0,0,0,0.05);
@@ -394,7 +376,7 @@
             /* Reemplazamos el check simple por un ícono más elaborado */
             content: '🛡️'; /* Usamos un emoji de escudo como placeholder visual */
             display: block;
-            font-size: 2rem;
+            font-size: 1.2rem; /* Icono más pequeño */
             margin-bottom: 10px;
             color: #00bfa5;
         }
@@ -402,17 +384,18 @@
             display: block; /* El título en su propia línea */
             font-size: 1.1rem;
             color: #333;
-            margin-bottom: 8px;
+            margin-bottom: 5px; /* Margen reducido */
             font-weight: bold;
         }
         .features-list p { /* Estilo para el texto descriptivo */
             margin: 0;
-            line-height: 1.6;
+            line-height: 1.4; /* Interlineado reducido */
             color: #555;
+            font-size: 0.9rem; /* Fuente más pequeña */
         }
 
         /* Estilo para resaltar texto importante en los modales */
-        .modal-content strong {
+        .content-panel strong {
             background-color: #f0e6ff; /* Fondo lila muy claro */
             color: #6a4a9c; /* Color morado del tema */
             padding: 2px 5px;
@@ -500,6 +483,9 @@
             margin: 0 auto;
             list-style: none;
             padding: 0;
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
         }
 
         .price-item {
@@ -532,7 +518,7 @@
 
         .price-item-info h4 {
             margin: 0 0 5px 0;
-            font-size: 1rem; /* Fuente más pequeña */
+            font-size: 0.9rem; /* Fuente más pequeña */
         }
 
         .price-item-info p {
@@ -542,7 +528,7 @@
         }
 
         .price-item-value {
-            font-size: 1.3rem; /* Fuente de precio más pequeña */
+            font-size: 1.2rem; /* Fuente de precio más pequeña */
             font-weight: bold;
             color: #8a2be2;
         }
@@ -670,24 +656,140 @@
 <body>
     <header class="page-header">
         <img src="logo.png" alt="Logo Upcons" class="header-logo">
-        <h1 class="main-title">TEJA ESPAÑOLA PVC</h1>
     </header>
+    <div class="title-bar">
+        <h1 class="main-title">TEJA ESPAÑOLA PVC</h1>
+    </div>
     <div class="main-container">
         <div class="image-buttons-wrapper">
             <div class="image-container">
-                <!-- Imagen estática que reemplaza al visor 3D -->
-                <img src="teja.png" alt="Teja española de PVC" class="static-image">
+                <!-- Panel inicial con la imagen -->
+                <div id="initial-content" class="content-panel active">
+                    <img src="teja.png" alt="Teja española de PVC" class="static-image">
+                </div>
+
+                <!-- Panel para Características -->
+                <div id="features-content" class="content-panel">
+                    <h2>Características</h2>
+                    <ul class="features-list">
+                        <li><strong>Ligereza</strong><p>Facilita su instalación y reduce la carga sobre la estructura del techo.</p></li>
+                        <li><strong>Resistencia</strong><p>Protegen contra impactos, corrosión y rayos UV.</p></li>
+                        <li><strong>Aislamiento</strong><p>Ofrecen aislamiento térmico y acústico.</p></li>
+                        <li><strong>Durabilidad</strong><p>Vida útil superior a 20 años.</p></li>
+                    </ul>
+                </div>
+
+                <!-- Panel para el Visor 3D -->
+                <div id="3d-content" class="content-panel">
+                    <model-viewer id="main-viewer" src="teja.glb" alt="Un modelo 3D de una teja" camera-controls auto-rotate exposure="1.2" reveal="manual" loading="eager">
+                        <div class="loading-overlay" slot="progress-bar"><span class="loading-percentage">Cargando...</span></div>
+                    </model-viewer>
+                </div>
+
+                <!-- Panel para Medidas -->
+                <div id="measures-content" class="content-panel">
+                    <div class="measures-layout">
+                        <div class="measures-text">
+                            <h2>Medidas</h2>
+                            <p>Disponibles en varias longitudes para minimizar desperdicios:</p>
+                            <ul class="measures-list">
+                                <li>Teja española 6.14 m. X 1.05</li>
+                                <li>Teja española 5.04 m. X 1.05</li>
+                                <li>Teja española 4.16 m. X 1.05</li>
+                                <li>Teja española 3.70 m. X 1.05</li>
+                                <li>Teja española 3.06 m. X 1.05</li>
+                                <li>Teja española 2.40 m. X 1.05</li>
+                            </ul>
+                        </div>
+                        <div class="measures-gallery">
+                            <div class="gallery-inner">
+                                <!-- Set de imágenes duplicado para bucle infinito -->
+                                <img src="t1.png" alt="Vista de teja 1" class="gallery-image">
+                                <img src="t2.jpg" alt="Vista de teja 2" class="gallery-image">
+                                <img src="t3.jpg" alt="Vista de teja 3" class="gallery-image">
+                                <img src="teja.png" alt="Vista de teja 4" class="gallery-image">
+                                <img src="t1.png" alt="Vista de teja 1" class="gallery-image">
+                                <img src="t2.jpg" alt="Vista de teja 2" class="gallery-image">
+                                <img src="t3.jpg" alt="Vista de teja 3" class="gallery-image">
+                                <img src="teja.png" alt="Vista de teja 4" class="gallery-image">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Panel para Sistema/Instalación -->
+                <div id="install-content" class="content-panel">
+                    <h2>Sistema</h2>
+                    <img src="instalacion.jpg" alt="Proceso de instalación" class="modal-image">
+                    <p>La instalación comienza una vez que la estructura principal está montada. Se centra en el soporte y la fijación de las tejas para proteger el área.</p>
+                    <ul class="measures-list">
+                        <li><strong>Montaje de correas:</strong> Se instalan correas metálicas sobre las vigas. Estas piezas forman la base para la cubierta.</li>
+                        <li><strong>Colocación de tejas:</strong> La instalación empieza en la parte más baja del techo y avanza hacia arriba, superponiendo las piezas para evacuar el agua.</li>
+                        <li><strong>Fijación segura:</strong> Cada teja se fija a las correas con tornillos o ganchos, prestando atención al sellado para evitar filtraciones.</li>
+                    </ul>
+                </div>
+
+                <!-- Panel para Accesorios -->
+                <div id="accessories-content" class="content-panel">
+                    <h2>Accesorios</h2>
+                    <p>Para lograr un acabado profesional y asegurar la correcta instalación y durabilidad de una cubierta de teja española de PVC, es indispensable utilizar accesorios especializados. A continuación, se presenta una guía de los accesorios más comunes, que incluyen imágenes de referencia para ayudar a su identificación.</p>
+                    
+                    <h4>Accesorios para cumbreras</h4>
+                    <p>Estos elementos son esenciales para sellar la unión de dos planos inclinados del tejado y evitar filtraciones de agua.</p>
+                    
+                    <h5>Cumbreros 2 vías</h5>
+                    <p>Sirven para unir dos lados del techo en la parte superior.</p>
+                    <img src="3vias.png" alt="Cumbrero 3 vías" class="modal-image"> <!-- Imagen corregida -->
+                    
+                    <h5>Cumbreros 3 vías</h5>
+                    <p>Se utilizan para unir tres faldones del tejado en una esquina, comúnmente en techos con forma de L o en intersecciones.</p>
+                    <img src="cumbrero.png" alt="Cumbrero 2 vías" class="modal-image"> <!-- Imagen corregida -->
+                    
+                    <h5>Cumbrero Principal</h5>
+                    <p>Un cumbrero principal, también conocido como caballete o cumbrera, es el elemento de remate que se coloca en la parte más alta de un tejado, en la línea horizontal donde se unen dos planos inclinados. Su función principal es proteger la edificación de la entrada de agua, nieve y otros elementos, asegurando la impermeabilidad y la solidez de la cubierta</p>
+                    <div style="clear: both;"></div> <!-- Limpia el float para el siguiente elemento -->
+                </div>
+
+                <!-- Panel para Garantía -->
+                <div id="warranty-content" class="content-panel">
+                    <h2>Garantía</h2>
+                    <ul class="measures-list">
+                        <li><strong>Duración de la garantía:</strong>
+                            <ul>
+                                <li>Garantía de integridad: Usualmente oscila entre 10 y 30 años, dependiendo del material (PVC o PVC/ASA).</li>
+                                <li>Garantía de color: La retención del color tiene una garantía de 5 a 10 años, especialmente en modelos con ASA.</li>
+                            </ul>
+                        </li>
+                        <li><strong>Alcance de la garantía:</strong>
+                            <ul>
+                                <li>Cubre defectos de fabricación, asegura resistencia a impactos y corrosión, y protege contra el desgaste prematuro.</li>
+                            </ul>
+                        </li>
+                        <li><strong>Exclusiones y condiciones:</strong>
+                            <ul>
+                                <li>La garantía puede anularse por instalación incorrecta, daños por desastres naturales o falta de mantenimiento.</li>
+                            </ul>
+                        </li>
+                        <li><strong>Recomendaciones:</strong>
+                            <ul><li>Consulte siempre el certificado de garantía y considere que los materiales con recubrimiento ASA ofrecen mejores garantías.</li></ul>
+                        </li>
+                    </ul>
+                </div>
+
             </div>
             <!-- Contenedor de botones al lado derecho de la imagen -->
             <div class="features-button-container">
                 <!-- Botón para mostrar características -->
-                <button id="features-btn" class="features-button">CONOCE</button>
+                <button data-content="features-content" class="features-button">VENTAJAS</button>
                 <!-- Nuevo botón para mostrar el visor 3D -->
-                <button id="show-3d-btn" class="features-button">3D</button>
+                <button data-content="3d-content" class="features-button">3D</button>
                 <!-- Botón para Medidas -->
-                <button id="measures-btn" class="features-button">MEDIDAS</button>
+                <button data-content="measures-content" class="features-button">MEDIDAS</button>
                 <!-- Botón de ejemplo para Instalación -->
-                <button id="install-btn" class="features-button">SISTEMA</button>
+                <button data-content="install-content" class="features-button">SISTEMA</button>
+                <!-- Nuevos botones -->
+                <button data-content="accessories-content" class="features-button">ACCESORIOS</button>
+                <button data-content="warranty-content" class="features-button">GARANTIA</button>
             </div>
         </div>
         <div class="text-container">
@@ -710,7 +812,7 @@
     </section>
 
     <section class="pricing-section">
-        <h2 class="section-title">Nuestros Productos</h2>
+        <h2 class="section-title">PRECIOS DE IMPORTADOR</h2>
         <ul class="price-list">
             <li class="price-item">
                 <img src="tejaventa.jpg" alt="Teja PVC" class="price-item-image">
@@ -779,83 +881,6 @@
         </div>
     </footer>
 
-    <!-- Ventana Modal para el Visor 3D (inicialmente oculta) -->
-    <div id="modal-3d" class="modal-overlay">
-        <div class="modal-content modal-3d">
-            <button id="modal-close" class="modal-close-btn">&times;</button>
-            <!-- El visor 3D ahora vive aquí dentro -->
-            <model-viewer id="main-viewer" src="teja.glb" alt="Un modelo 3D de una teja" camera-controls auto-rotate exposure="1.2" reveal="manual">
-                <!-- Overlay de carga personalizado -->
-                <div class="loading-overlay" slot="progress-bar"><span class="loading-percentage">Cargando...</span></div>
-            </model-viewer>
-        </div>
-    </div>
-
-    <!-- Ventana Modal para Características (inicialmente oculta) -->
-    <div id="features-modal" class="modal-overlay">
-        <div class="modal-content modal-features">
-            <button id="features-close-btn" class="modal-close-btn">&times;</button>
-            <h2>Características Principales</h2>
-            <ul class="features-list">
-                <li class="reveal-item"><strong>Ligereza</strong><p>Son mucho más livianas que las tejas tradicionales, lo que facilita su instalación y reduce la carga sobre la estructura del techo.</p></li>
-                <li class="reveal-item"><strong>Resistencia</strong><p>Protegen eficazmente contra impactos, corrosión y rayos UV.</p></li>
-                <li class="reveal-item"><strong>Aislamiento</strong><p>Ofrecen aislamiento térmico y acústico, mejorando la eficiencia energética de su hogar.</p></li>
-                <li class="reveal-item"><strong>Durabilidad</strong><p>Su vida útil puede superar los 20 años, y algunos modelos garantizan la estabilidad del color por más de una década.</p></li>
-                <li class="reveal-item"><strong>Bajo Mantenimiento</strong><p>Su superficie repele la suciedad y no requiere cuidados especiales.</p></li>
-                <li class="reveal-item"><strong>Impermeabilidad Total</strong><p>Son completamente impermeables, evitando filtraciones de humedad.</p></li>
-                <li class="reveal-item"><strong>Instalación Sencilla</strong><p>Su manejo es fácil y pueden ser instaladas sobre estructuras de madera o metal.</p></li>
-            </ul>
-        </div>
-    </div>
-
-    <!-- Ventana Modal para Medidas (inicialmente oculta) -->
-    <div id="measures-modal" class="modal-overlay">
-        <div class="modal-content modal-features">
-            <button id="measures-close-btn" class="modal-close-btn">&times;</button>
-            <h2>Medidas Disponibles</h2>
-            <div class="measures-layout">
-                <div class="measures-text">
-                    <p class="reveal-item">Nuestras tejas se ofrecen en una variedad de longitudes para adaptarse a diferentes necesidades de construcción y minimizar los cortes y desperdicios:</p>
-                    <ul class="measures-list">
-                        <li class="reveal-item">Teja española 6.14 m. X 1.05</li>
-                        <li class="reveal-item">Teja española 5.04 m. X 1.05</li>
-                        <li class="reveal-item">Teja española 4.16 m. X 1.05</li>
-                        <li class="reveal-item">Teja española 3.70 m. X 1.05</li>
-                        <li class="reveal-item">Teja española 3.06 m. X 1.05</li>
-                        <li class="reveal-item">Teja española 2.40 m. X 1.05</li>
-                    </ul>
-                    <p class="reveal-item"><strong>Nota:</strong> Todas las planchas tienen un ancho total de 1.05 metros y un espesor de 2.5 mm. El ancho útil es de aproximadamente 0.96 metros, después de considerar el solape para la instalación.</p>
-                </div>
-                <div class="measures-gallery">
-                    <div class="gallery-inner">
-                        <img src="t1.png" alt="Vista de teja 1" class="gallery-image">
-                        <img src="t2.jpg" alt="Vista de teja 2" class="gallery-image">
-                        <img src="t3.jpg" alt="Vista de teja 3" class="gallery-image">
-                        <!-- Se duplican las imágenes para un bucle infinito y suave -->
-                        <img src="t1.png" alt="Vista de teja 1" class="gallery-image">
-                        <img src="t2.jpg" alt="Vista de teja 2" class="gallery-image">
-                        <img src="t3.jpg" alt="Vista de teja 3" class="gallery-image">
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Ventana Modal para Instalación (inicialmente oculta) -->
-    <div id="install-modal" class="modal-overlay">
-        <div class="modal-content modal-features">
-            <button id="install-close-btn" class="modal-close-btn">&times;</button>
-            <h2>Instalación de la Cubierta</h2>
-            <img src="instalacion.jpg" alt="Proceso de instalación de tejas de PVC" class="modal-image">
-            <p class="reveal-item">La instalación de la cubierta comienza una vez que la estructura principal de columnas y vigas está firmemente montada. Esta fase se centra en el sistema de soporte y la fijación de las tejas para proteger el área de la intemperie.</p>
-            <ul class="features-list">
-                <li class="reveal-item"><strong>Montaje de las correas:</strong> Las correas metálicas se instalan sobre las vigas principales. Estas piezas horizontales son cruciales, ya que forman la base directa para la cubierta y distribuyen el peso hacia la estructura.</li>
-                <li class="reveal-item"><strong>Preparación de la cubierta:</strong> Se procede a la colocación de las tejas sobre las correas. La instalación debe empezar en la parte más baja del techo y avanzar hacia la cumbrera (la parte más alta), superponiendo las piezas para garantizar una correcta evacuación del agua.</li>
-                <li class="reveal-item"><strong>Fijación de la cubierta:</strong> Cada teja o lámina se debe fijar de manera segura a las correas utilizando tornillos o ganchos adecuados, especialmente en áreas propensas a vientos fuertes. Se presta especial atención al sellado de los puntos de unión para asegurar una protección completa contra filtraciones.</li>
-            </ul>
-        </div>
-    </div>
-
     <script>
         // --- Lógica para el contador de carga del 3D ---
         const modelViewer = document.querySelector('#main-viewer');
@@ -867,9 +892,9 @@
             // Escuchar el progreso de carga para actualizar el porcentaje
             modelViewer.addEventListener('progress', (event) => {
                 const progress = event.detail.totalProgress;
-                const percentage = Math.round(progress * 100);
-                loadingPercentage.textContent = `Cargando... ${percentage}%`;
+                loadingPercentage.textContent = `Cargando...`;
             });
+
 
             // Escuchar cuando el modelo termine de cargar completamente
             modelViewer.addEventListener('load', () => {
@@ -878,112 +903,39 @@
                     loadingOverlay.classList.add('hide');
                 }, 300); // Pequeño delay para una transición suave
             });
-
-            // También escuchar cuando el modelo esté listo para la interacción
-            modelViewer.addEventListener('model-visibility', (event) => {
-                if (event.detail.visible) {
-                    // El modelo es visible y listo, ocultar overlay de carga
-                    loadingOverlay.classList.add('hide');
-                }
-            });
         }
 
-        // Función genérica para controlar los modales
-        function setupModal(buttonId, modalId, closeButtonId) {
-            let observer; // Variable para guardar el Intersection Observer
-            const modelViewer = document.querySelector('#main-viewer'); // Seleccionamos el visor 3D
-            const openButton = document.getElementById(buttonId);
-            const modal = document.getElementById(modalId);
-            const closeButton = document.getElementById(closeButtonId);
+        // --- Nueva Lógica para cambiar el contenido dinámico ---
+        const contentButtons = document.querySelectorAll('.features-button');
+        const contentPanels = document.querySelectorAll('.content-panel');
 
-            // Abrir el modal
-            openButton.addEventListener('click', () => {
-                // Hacemos visible el modal
-                modal.classList.add('visible');
+        contentButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                const contentId = button.dataset.content;
 
-                // --- Nueva Lógica con Intersection Observer ---
-                // Opciones para el observer: se activa cuando el 20% del elemento es visible
-                const options = {
-                    root: modal.querySelector('.modal-content'), // Observa el scroll dentro del modal
-                    rootMargin: '0px',
-                    threshold: 0.2
-                };
+                // Ocultar todos los paneles
+                contentPanels.forEach(panel => {
+                    panel.classList.remove('active');
+                });
 
-                observer = new IntersectionObserver((entries, observer) => {
-                    entries.forEach(entry => {
-                        // Si el elemento está en la pantalla
-                        if (entry.isIntersecting) {
-                            entry.target.classList.add('animate'); // Añade la clase para animar
-                            observer.unobserve(entry.target); // Deja de observar este elemento
-                        }
-                    });
-                }, options);
+                // Mostrar el panel correspondiente
+                const activePanel = document.getElementById(contentId);
+                if (activePanel) {
+                    activePanel.classList.add('active');
+                }
 
-                // Le decimos al observer qué elementos vigilar
-                const itemsToReveal = modal.querySelectorAll('.reveal-item');
-                itemsToReveal.forEach(item => observer.observe(item));
-
-                // --- ¡ESTA ES LA PARTE CLAVE! ---
-                // Si estamos abriendo el modal 3D, le decimos al visor que se muestre.
-                if (modal.id === 'modal-3d' && modelViewer) {
-                    // Resetear el overlay de carga antes de mostrar el modelo
+                // Si el botón es el de 3D, activar el visor
+                if (contentId === '3d-content' && modelViewer) {
                     const loadingOverlay = modelViewer.querySelector('.loading-overlay');
-                    if (loadingOverlay) {
+                    // Si el modelo aún no ha cargado, muestra el overlay. Si ya cargó, no hagas nada.
+                    if (loadingOverlay && !modelViewer.loaded) {
                         loadingOverlay.classList.remove('hide');
                     }
-                    
-                    // Esto activa la carga y renderizado del modelo.
+                    // dismissPoster() ahora solo revela el modelo, no inicia la carga.
                     modelViewer.dismissPoster();
                 }
             });
-
-            const closeModal = () => {
-                modal.classList.remove('visible');
-
-                // Resetea la animación al cerrar
-                const itemsToReveal = modal.querySelectorAll('.reveal-item');
-                itemsToReveal.forEach(item => {
-                    item.classList.remove('animate');
-                    item.style.animationDelay = ''; // Limpia el retraso
-                });
-
-                // Desconecta el observer para limpiar recursos
-                if (observer) {
-                    observer.disconnect();
-                }
-
-                if (modal.id === 'modal-3d' && modelViewer) {
-                    modelViewer.showPoster();
-                }
-            };
-
-            // Solo añadir los listeners para cerrar si el botón de cierre existe
-            if (closeButton) {
-                // Cerrar el modal con el botón 'X'
-                closeButton.addEventListener('click', () => {
-                    closeModal();
-                });
-            }
-
-            // Cerrar el modal al hacer clic en el fondo oscuro
-            modal.addEventListener('click', (event) => {
-                if (event.target === modal) {
-                    closeModal();
-                }
-            });
-        }
-
-        // Configurar el modal de Características
-        setupModal('features-btn', 'features-modal', 'features-close-btn');
-
-        // Configurar el modal 3D
-        setupModal('show-3d-btn', 'modal-3d', 'modal-close');
-
-        // Configurar el modal de Medidas
-        setupModal('measures-btn', 'measures-modal', 'measures-close-btn');
-
-        // Configurar el modal de Instalación (actualmente no hace nada)
-        setupModal('install-btn', 'install-modal', 'install-close-btn');
+        });
     </script>
 </body>
 </html>
