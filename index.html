@@ -37,11 +37,11 @@
         /* Nuevo contenedor para el título que ocupa todo el ancho */
         .title-bar {
             background: linear-gradient(90deg, #1e3c72, #2a5298); /* Gradiente azul oscuro */
-            padding: 25px 20px;
+            padding: 15px 20px; /* Padding vertical reducido */
             text-align: center;
             position: relative;
             overflow: hidden; /* Para contener el efecto de luz */
-            margin-bottom: 40px;
+            margin-bottom: 25px; /* Margen inferior reducido */
         }
 
         .main-title {
@@ -130,20 +130,26 @@
             
             /* Adjust content panel height for mobile */
             .main-container {
-                gap: 15px; /* Gap más pequeño en tablet */
+                gap: 20px; /* Gap intermedio en tablet */
+                padding: 0 15px; /* Padding intermedio */
             }
             
             .image-buttons-wrapper {
-                gap: 10px; /* Gap más pequeño */
-                min-width: 0; /* Sin restricción */
+                gap: 15px; /* Gap intermedio para botones */
+                min-width: 280px; /* Ancho mínimo para tablet */
             }
             
             .image-container {
-                height: 380px; /* Altura ajustada para tablet */
+                height: 400px; /* Altura ajustada para tablet con 3 imágenes */
                 min-width: 0; /* Permitir que se encoja */
                 flex: 1; /* Ocupa el espacio restante */
                 order: 1; /* La imagen va primero */
                 padding: 12px; /* Padding reducido */
+            }
+            
+            /* Ajustes para las dos imágenes en tablet */
+            .dual-image {
+                height: calc(50% - 5px); /* Mantener 50% cada una */
             }
             
             .content-panel {
@@ -173,20 +179,30 @@
         /* Media query adicional para pantallas muy pequeñas */
         @media (max-width: 480px) {
             .main-container {
-                padding: 0 5px; /* Padding aún más pequeño */
-                gap: 10px; /* Gap más pequeño */
-                min-width: 280px; /* Ancho mínimo más pequeño */
+                padding: 0 8px; /* Padding un poco más grande para móviles */
+                gap: 12px; /* Gap un poco más grande */
+                min-width: 300px; /* Ancho mínimo un poco más grande */
             }
             
             .image-buttons-wrapper {
-                gap: 8px; /* Gap más pequeño entre imagen y botones */
-                min-width: 0; /* Sin restricción de ancho mínimo */
+                gap: 10px; /* Gap más pequeño pero no demasiado */
+                min-width: 250px; /* Ancho mínimo para móviles */
             }
             
             .image-container {
-                height: 300px; /* Altura más pequeña para móviles */
+                height: 320px; /* Altura un poco más grande para acomodar 3 imágenes */
                 min-width: 0;
-                padding: 10px; /* Padding reducido */
+                padding: 8px; /* Padding reducido */
+            }
+            
+            /* Ajustes para las dos imágenes en móviles */
+            .images-stack {
+                gap: 8px; /* Gap ajustado para móviles */
+            }
+            
+            .dual-image {
+                height: calc(50% - 4px); /* 50% cada una con gap más pequeño */
+                width: 98%; /* Un poco más ancho en móviles */
             }
             
             .content-panel {
@@ -234,27 +250,27 @@
         .main-container {
             display: flex;
             flex-wrap: wrap; /* Permite que los elementos se apilen en pantallas pequeñas */
-            gap: 20px; /* Espacio entre el visor y el texto */
+            gap: 25px; /* Espacio más grande entre elementos */
             align-items: flex-start; /* Alinea los items al inicio */
-            padding: 0 15px; /* Padding más pequeño por defecto */
-            min-width: 280px; /* Ancho mínimo más pequeño */
-            max-width: 1400px; /* Ancho máximo para no ser demasiado ancho en pantallas grandes */
+            padding: 0 20px; /* Padding un poco más grande */
+            min-width: 320px; /* Ancho mínimo más grande */
+            max-width: 1600px; /* Ancho máximo más grande */
             margin: 0 auto; /* Centrar el contenedor */
         }
         
         /* Contenedor que agrupa la imagen y los botones */
         .image-buttons-wrapper {
             display: flex;
-            gap: 12px; /* Gap más pequeño */
+            gap: 20px; /* Gap más grande para mover botones a la derecha */
             align-items: flex-start;
             flex: 1;
-            min-width: 250px; /* Ancho mínimo más pequeño */
+            min-width: 300px; /* Ancho mínimo más grande */
         }
         /* Contenedor para la imagen estática */
         .image-container {
-            flex: 2; /* Aumentado para darle más espacio */
-            min-width: 200px; /* Ancho mínimo más pequeño para móviles */
-            max-width: 70%; /* Máximo para que no ocupe toda la pantalla */
+            flex: 3; /* Aún más espacio para el contenedor */
+            min-width: 300px; /* Ancho mínimo más grande */
+            max-width: 75%; /* Máximo más grande */
             /* Estilos para el área de contenido dinámico */
             position: relative;
             height: 500px; /* Altura fija para que coincida con los botones */
@@ -329,6 +345,34 @@
             object-fit: contain; /* Muestra la imagen completa sin recortar */
             margin: 10px auto; /* Centrar y agregar margen para alejar */
             display: block; /* Para que el margin auto funcione */
+        }
+
+        /* Contenedor para las dos imágenes */
+        .images-stack {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            gap: 10px; /* Espacio entre las dos imágenes */
+        }
+
+        /* Ambas imágenes del mismo tamaño */
+        .dual-image {
+            flex: 1; /* Mismo espacio para ambas */
+            width: 95%;
+            height: calc(50% - 5px); /* 50% del contenedor menos el gap */
+            object-fit: contain; /* Muestra la imagen completa */
+            border-radius: 12px;
+            margin: 0 auto; /* Centrar horizontalmente */
+            display: block;
+        }
+
+        .dual-image.top {
+            margin-bottom: 5px;
+        }
+
+        .dual-image.bottom {
+            margin-top: 5px;
+            width: 80%; /* Ancho reducido para la imagen inferior */
         }
         /* Contenedor para el texto */
         .text-container {
@@ -893,9 +937,12 @@
     <div class="main-container">
         <div class="image-buttons-wrapper">
             <div class="image-container">
-                <!-- Panel inicial con la imagen -->
+                <!-- Panel inicial con las imágenes -->
                 <div id="initial-content" class="content-panel active">
-                    <img src="teja.png" alt="Teja española de PVC" class="static-image">
+                    <div class="images-stack">
+                        <img src="teja.png" alt="Teja española de PVC" class="dual-image top">
+                        <img src="fondo.jpg" alt="Imagen inferior" class="dual-image bottom">
+                    </div>
                 </div>
 
                 <!-- Panel para Características -->
