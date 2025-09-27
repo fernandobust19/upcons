@@ -99,6 +99,37 @@
                 flex-direction: column; /* Apila el texto y la galería en móviles */
                 gap: 15px;
             }
+            
+            /* Adjust content panel height for mobile */
+            .image-container {
+                height: 400px; /* Altura reducida para móviles */
+                min-width: 350px; /* Mantener ancho mínimo en tablet */
+            }
+            
+            .content-panel {
+                height: 370px; /* Altura ajustada para móviles */
+            }
+            
+            .text-container {
+                min-width: 280px; /* Ancho mínimo reducido para tablet */
+                max-width: none; /* Sin límite máximo en tablet */
+            }
+        }
+
+        /* Media query adicional para pantallas muy pequeñas */
+        @media (max-width: 480px) {
+            .image-container {
+                height: 350px; /* Altura aún más pequeña para pantallas muy pequeñas */
+                min-width: 280px; /* Ancho mínimo para móviles muy pequeños */
+            }
+            
+            .content-panel {
+                height: 320px; /* Altura ajustada para pantallas muy pequeñas */
+            }
+            
+            .text-container {
+                min-width: 250px; /* Ancho mínimo para móviles muy pequeños */
+            }
         }
 
         /* Contenedor principal que usa Flexbox para el diseño */
@@ -108,6 +139,9 @@
             gap: 20px; /* Espacio entre el visor y el texto */
             align-items: flex-start; /* Alinea los items al inicio */
             padding: 0 20px; /* Añade el padding lateral que antes estaba en el body */
+            min-width: 320px; /* Ancho mínimo del contenedor principal */
+            max-width: 1400px; /* Ancho máximo para no ser demasiado ancho en pantallas grandes */
+            margin: 0 auto; /* Centrar el contenedor */
         }
         
         /* Contenedor que agrupa la imagen y los botones */
@@ -120,14 +154,16 @@
         }
         /* Contenedor para la imagen estática */
         .image-container {
-            flex: 1;
+            flex: 2; /* Aumentado para darle más espacio */
+            min-width: 450px; /* Ancho mínimo más grande para evitar que se haga pequeño */
+            max-width: 70%; /* Máximo para que no ocupe toda la pantalla */
             /* Estilos para el área de contenido dinámico */
             position: relative;
             height: 500px; /* Altura fija para que coincida con los botones */
             background-color: #f8f9fa;
             padding: 15px;
             border-radius: 12px;
-            overflow-y: auto; /* Scroll si el contenido es muy largo */
+            overflow: hidden; /* El scroll lo manejan los content-panels individuales */
             box-shadow: inset 0 2px 8px rgba(0,0,0,0.05);
         }
 
@@ -135,11 +171,58 @@
         .content-panel {
             display: none; /* Ocultos por defecto */
             width: 100%;
-            height: 100%;
+            height: 470px; /* Altura fija para todos los paneles (500px del contenedor - 30px de padding) */
+            overflow-y: auto; /* Scroll vertical cuando sea necesario */
+            padding-right: 5px; /* Espacio para la barra de scroll */
         }
 
         .content-panel.active {
             display: block; /* El panel activo se muestra */
+        }
+
+        /* Personalización de la barra de scroll para todos los paneles */
+        .content-panel::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .content-panel::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 3px;
+        }
+
+        .content-panel::-webkit-scrollbar-thumb {
+            background: #c1c1c1;
+            border-radius: 3px;
+        }
+
+        .content-panel::-webkit-scrollbar-thumb:hover {
+            background: #a8a8a8;
+        }
+
+        /* Asegurar que todos los elementos dentro de los paneles respeten el contenedor */
+        .content-panel > * {
+            max-width: 100%;
+            box-sizing: border-box;
+        }
+
+        /* Espaciado uniforme para listas dentro de los paneles */
+        .content-panel .measures-list,
+        .content-panel .features-list {
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Asegurar que las imágenes dentro de los paneles no rompan el layout */
+        .content-panel img {
+            max-width: 100%;
+            height: auto;
+        }
+        /* Asegurar que los elementos principales dentro de los paneles ocupen la altura completa */
+        .content-panel > .static-image,
+        .content-panel > model-viewer,
+        .content-panel > .measures-layout {
+            height: 100%;
+            object-fit: cover; /* Para que la imagen no se deforme */
         }
         .static-image, .modal-image {
             width: 100%;
@@ -149,7 +232,9 @@
         }
         /* Contenedor para el texto */
         .text-container {
-            flex: 2; /* Más espacio para el texto */
+            flex: 1; /* Proporción ajustada */
+            min-width: 300px; /* Ancho mínimo para evitar que se comprima demasiado */
+            max-width: 400px; /* Máximo para mantener proporciones */
         }
         .text-container h1 {
             font-family: 'Lato', sans-serif; /* Fuente más moderna y atractiva */
@@ -175,7 +260,7 @@
         /* Estilos para el visor del modelo (ahora en el modal) */
         model-viewer {
             width: 100%;
-            height: 420px; /* Altura fija para el visor en el panel */
+            height: 100%; /* Altura completa para llenar el panel */
             --poster-color: transparent; /* Fondo transparente mientras carga */
             /* Estilo para la barra de progreso */
             --progress-bar-color: #00f2ff;
@@ -401,7 +486,7 @@
         /* Estilos para la lista de características */
         .features-list {
             display: grid; /* Usamos grid para un diseño de tarjetas moderno */
-            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); /* Columnas responsivas */
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); /* Ancho mínimo reducido para más flexibilidad */
             gap: 8px; /* Espacio más reducido entre tarjetas */
             list-style-type: none;
             padding: 0;
@@ -713,10 +798,10 @@
                 <div id="features-content" class="content-panel">
                     <h2>Características</h2>
                     <ul class="features-list">
-                        <li><strong>Ligereza</strong><p>Facilita la instalación y reduce la carga estructural.</p></li>
-                        <li><strong>Resistencia</strong><p>Alta protección contra impactos, corrosión y rayos UV.</p></li>
-                        <li><strong>Aislamiento</strong><p>Buen aislamiento térmico y también acústico.</p></li>
-                        <li><strong>Durabilidad</strong><p>Larga vida útil, superando los 20 años de uso.</p></li>
+                        <li><strong>Ligereza</strong><p>Instalación fácil, reduce la carga del techo.</p></li>
+                        <li><strong>Resistencia</strong><p>Protege de impactos, corrosión y rayos UV.</p></li>
+                        <li><strong>Aislamiento</strong><p>Aísla del calor y del ruido exterior.</p></li>
+                        <li><strong>Durabilidad</strong><p>Vida útil superior a los 20 años de servicio.</p></li>
                     </ul>
                 </div>
 
