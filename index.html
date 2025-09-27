@@ -327,6 +327,16 @@
             padding: 6px 8px;
         }
 
+        /* Estilos para la lista de medidas en dos líneas */
+        #measures-content .measures-list li {
+            display: flex;
+            flex-direction: column;
+        }
+        #measures-content .measures-list small {
+            font-weight: bold;
+            color: #555;
+        }
+
         /* Estilos específicos para el panel de instalación */
         #install-content p, #install-content .measures-list li {
             font-size: 0.9rem; /* Fuente más pequeña para el texto de instalación */
@@ -726,12 +736,12 @@
                             <h2>Medidas</h2>
                             <p>Disponibles en varias longitudes para minimizar desperdicios:</p>
                             <ul class="measures-list">
-                                <li>Teja española 6.14 m. X 1.05</li>
-                                <li>Teja española 5.04 m. X 1.05</li>
-                                <li>Teja española 4.16 m. X 1.05</li>
-                                <li>Teja española 3.70 m. X 1.05</li>
-                                <li>Teja española 3.06 m. X 1.05</li>
-                                <li>Teja española 2.40 m. X 1.05</li>
+                                <li><span>Teja española</span><small>6.14 m. X 1.05</small></li>
+                                <li><span>Teja española</span><small>5.04 m. X 1.05</small></li>
+                                <li><span>Teja española</span><small>4.16 m. X 1.05</small></li>
+                                <li><span>Teja española</span><small>3.70 m. X 1.05</small></li>
+                                <li><span>Teja española</span><small>3.06 m. X 1.05</small></li>
+                                <li><span>Teja española</span><small>2.40 m. X 1.05</small></li>
                             </ul>
                         </div>
                         <div class="measures-gallery">
