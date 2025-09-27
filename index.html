@@ -86,8 +86,18 @@
                 flex-direction: column; /* Apila los elementos principales verticalmente */
             }
 
+            .main-title {
+                font-size: 1.5rem; /* Tamaño más pequeño para móviles */
+                letter-spacing: 2px; /* Menos espaciado para móviles */
+            }
+
             .price-list {
                 grid-template-columns: 1fr; /* Una sola columna en móviles */
+            }
+
+            .measures-layout {
+                flex-direction: column; /* Apila el texto y la galería en móviles */
+                gap: 15px;
             }
         }
 
@@ -311,6 +321,11 @@
             border-radius: 5px;
             border-left: 4px solid #8a2be2;
         }
+        
+        #measures-content .measures-list li {
+            font-size: 0.9rem; /* Letra más pequeña para las medidas */
+            padding: 6px 8px;
+        }
 
         /* Estilos específicos para el panel de instalación */
         #install-content p, #install-content .measures-list li {
@@ -502,7 +517,7 @@
             list-style: none;
             padding: 0;
             display: grid;
-            grid-template-columns: repeat(2, 1fr);
+            grid-template-columns: 1fr; /* Cambiado a una sola columna */
             gap: 15px;
         }
 
