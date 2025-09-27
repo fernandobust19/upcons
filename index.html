@@ -297,7 +297,7 @@
             max-width: 68%; /* Máximo más grande sin exceder la pantalla */
             /* Estilos para el área de contenido dinámico */
             position: relative;
-            height: 500px; /* Altura fija para que coincida con los botones */
+            height: 380px; /* Altura ajustada para coincidir con los 6 botones (6*55px + 5*10px gap) */
             background-color: #f8f9fa;
             padding: 15px;
             border-radius: 12px;
@@ -309,7 +309,7 @@
         .content-panel {
             display: none; /* Ocultos por defecto */
             width: 100%;
-            height: 470px; /* Altura fija para todos los paneles (500px del contenedor - 30px de padding) */
+            height: 350px; /* Altura ajustada (380px del contenedor - 30px de padding) */
             overflow-y: auto; /* Scroll vertical cuando sea necesario */
             padding-right: 5px; /* Espacio para la barra de scroll */
         }
@@ -646,6 +646,12 @@
         #warranty-content .measures-list li {
             border-left: none;
             padding-left: 8px; /* Mantiene un padding consistente */
+            font-size: 0.8rem; /* Fuente más pequeña para el texto de garantía */
+            line-height: 1.4; /* Interlineado ajustado */
+        }
+        #warranty-content .measures-list ul {
+            padding-left: 15px; /* Indentación para las sub-listas */
+            margin-top: 5px;
         }
 
         /* Estilos para las imágenes de accesorios */
