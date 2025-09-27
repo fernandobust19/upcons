@@ -103,9 +103,10 @@
             
             /* Reorganizar el layout imagen-botones en móviles */
             .image-buttons-wrapper {
-                flex-direction: column; /* Apila imagen y botones verticalmente */
+                flex-direction: row; /* Mantiene imagen y botones en paralelo */
                 gap: 15px;
                 min-width: 0; /* Permitir que se encoja */
+                width: 100%; /* Ocupa todo el ancho para que el texto se vaya abajo */
             }
             
             /* Botones en fila horizontal en móviles */
@@ -131,7 +132,7 @@
             .image-container {
                 height: 400px; /* Altura ajustada para móviles */
                 min-width: 0; /* Permitir que se encoja */
-                max-width: 100%; /* Usar todo el ancho disponible */
+                flex: 1; /* Ocupa el espacio restante */
                 order: 1; /* La imagen va primero */
             }
             
@@ -142,7 +143,7 @@
             .text-container {
                 min-width: 0; /* Permitir que se encoja completamente */
                 max-width: 100%; /* Usar todo el ancho disponible */
-                order: 3; /* El texto va al final */
+                flex-basis: 100%; /* Asegura que ocupe toda una fila y se vaya abajo */
             }
 
             /* Botones más pequeños en tablet */
@@ -154,8 +155,7 @@
             
             /* Remover restricción de ancho del contenedor de botones */
             .features-button-container {
-                max-width: 100%;
-                width: auto;
+                width: 60px; /* Ancho fijo para la columna de botones */
             }
         }
 
