@@ -130,13 +130,13 @@
             
             /* Adjust content panel height for mobile */
             .main-container {
-                gap: 20px; /* Gap intermedio en tablet */
-                padding: 0 15px; /* Padding intermedio */
+                gap: 15px; /* Gap más pequeño en tablet */
+                padding: 0 10px; /* Padding más pequeño */
             }
             
             .image-buttons-wrapper {
-                gap: 15px; /* Gap intermedio para botones */
-                min-width: 280px; /* Ancho mínimo para tablet */
+                gap: 10px; /* Gap más pequeño para botones */
+                min-width: 0; /* Sin restricción en tablet */
             }
             
             .image-container {
@@ -148,8 +148,20 @@
             }
             
             /* Ajustes para las dos imágenes en tablet */
-            .dual-image {
+            .dual-image.top {
                 height: calc(50% - 5px); /* Mantener 50% cada una */
+                width: 85%; /* teja.png más grande en tablet */
+            }
+            
+            .dual-image.bottom {
+                height: calc(50% - 5px); /* Mantener 50% cada una */
+                width: 60%; /* fondo.jpg más pequeña en tablet */
+            }
+            
+            /* Título responsive en tablet */
+            .image-title {
+                font-size: 12px;
+                margin-top: 6px;
             }
             
             .content-panel {
@@ -179,14 +191,14 @@
         /* Media query adicional para pantallas muy pequeñas */
         @media (max-width: 480px) {
             .main-container {
-                padding: 0 8px; /* Padding un poco más grande para móviles */
-                gap: 12px; /* Gap un poco más grande */
-                min-width: 300px; /* Ancho mínimo un poco más grande */
+                padding: 0 5px; /* Padding pequeño para móviles */
+                gap: 10px; /* Gap pequeño */
+                min-width: 280px; /* Ancho mínimo conservador */
             }
             
             .image-buttons-wrapper {
-                gap: 10px; /* Gap más pequeño pero no demasiado */
-                min-width: 250px; /* Ancho mínimo para móviles */
+                gap: 8px; /* Gap pequeño para móviles */
+                min-width: 0; /* Sin restricción en móviles */
             }
             
             .image-container {
@@ -200,9 +212,21 @@
                 gap: 8px; /* Gap ajustado para móviles */
             }
             
-            .dual-image {
+            .dual-image.top {
                 height: calc(50% - 4px); /* 50% cada una con gap más pequeño */
-                width: 98%; /* Un poco más ancho en móviles */
+                width: 85%; /* teja.png más grande en móvil */
+            }
+            
+            .dual-image.bottom {
+                height: calc(50% - 4px); /* 50% cada una con gap más pequeño */
+                width: 60%; /* fondo.jpg más pequeña en móvil */
+            }
+            
+            /* Título responsive en móvil */
+            .image-title {
+                font-size: 10px;
+                margin-top: 4px;
+                letter-spacing: 0.5px;
             }
             
             .content-panel {
@@ -250,27 +274,27 @@
         .main-container {
             display: flex;
             flex-wrap: wrap; /* Permite que los elementos se apilen en pantallas pequeñas */
-            gap: 25px; /* Espacio más grande entre elementos */
+            gap: 20px; /* Espacio original */
             align-items: flex-start; /* Alinea los items al inicio */
-            padding: 0 20px; /* Padding un poco más grande */
-            min-width: 320px; /* Ancho mínimo más grande */
-            max-width: 1600px; /* Ancho máximo más grande */
+            padding: 0 15px; /* Padding original */
+            min-width: 280px; /* Ancho mínimo original */
+            max-width: 1400px; /* Ancho máximo original */
             margin: 0 auto; /* Centrar el contenedor */
         }
         
         /* Contenedor que agrupa la imagen y los botones */
         .image-buttons-wrapper {
             display: flex;
-            gap: 20px; /* Gap más grande para mover botones a la derecha */
+            gap: 12px; /* Gap original para que los botones no se salgan */
             align-items: flex-start;
             flex: 1;
-            min-width: 300px; /* Ancho mínimo más grande */
+            min-width: 250px; /* Ancho mínimo original */
         }
         /* Contenedor para la imagen estática */
         .image-container {
-            flex: 3; /* Aún más espacio para el contenedor */
-            min-width: 300px; /* Ancho mínimo más grande */
-            max-width: 75%; /* Máximo más grande */
+            flex: 2; /* Espacio balanceado */
+            min-width: 250px; /* Ancho mínimo conservador */
+            max-width: 70%; /* Máximo conservador */
             /* Estilos para el área de contenido dinámico */
             position: relative;
             height: 500px; /* Altura fija para que coincida con los botones */
@@ -355,15 +379,24 @@
             gap: 10px; /* Espacio entre las dos imágenes */
         }
 
-        /* Ambas imágenes del mismo tamaño */
+        /* Configuración base para ambas imágenes */
         .dual-image {
             flex: 1; /* Mismo espacio para ambas */
-            width: 95%;
             height: calc(50% - 5px); /* 50% del contenedor menos el gap */
-            object-fit: contain; /* Muestra la imagen completa */
+            object-fit: contain; /* Muestra la imagen completa sin recortar */
             border-radius: 12px;
             margin: 0 auto; /* Centrar horizontalmente */
             display: block;
+        }
+        
+        /* teja.png más grande */
+        .dual-image.top {
+            width: 85%; /* teja.png más grande */
+        }
+        
+        /* fondo.jpg más pequeña */
+        .dual-image.bottom {
+            width: 60%; /* fondo.jpg más pequeña */
         }
 
         .dual-image.top {
@@ -372,7 +405,26 @@
 
         .dual-image.bottom {
             margin-top: 5px;
-            width: 80%; /* Ancho reducido para la imagen inferior */
+        }
+
+        /* Contenedor para imagen con título */
+        .image-with-title {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            flex: 1;
+        }
+
+        /* Título debajo de la imagen */
+        .image-title {
+            color: #2c5aa0;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 14px;
+            font-weight: bold;
+            text-align: center;
+            margin-top: 8px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
         /* Contenedor para el texto */
         .text-container {
@@ -940,8 +992,11 @@
                 <!-- Panel inicial con las imágenes -->
                 <div id="initial-content" class="content-panel active">
                     <div class="images-stack">
-                        <img src="teja.png" alt="Teja española de PVC" class="dual-image top">
-                        <img src="fondo.jpg" alt="Imagen inferior" class="dual-image bottom">
+                        <img src="teja.png" alt="Teja española de PVC" class="dual-image top" onerror="this.style.display='none'">
+                        <div class="image-with-title">
+                            <img src="fondo.jpg" alt="Imagen de fondo" class="dual-image bottom" onerror="this.src='teja.png'; this.alt='Imagen alternativa'">
+                            <div class="image-title">FONDO BLANCO</div>
+                        </div>
                     </div>
                 </div>
 
