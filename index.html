@@ -1011,6 +1011,34 @@
             line-height: 1.2; /* Espaciado entre líneas mínimo */
         }
         
+        /* Estilos para el nuevo botón "Cómo llegar" */
+        .how-to-get-there-btn {
+            display: inline-block;
+            background-color: #28a745; /* Verde llamativo */
+            color: #fff;
+            padding: 12px 25px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: bold;
+            margin-top: 10px;
+            margin-bottom: 25px; /* Espacio antes de las ubicaciones */
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            animation: pulse-green 2s infinite;
+        }
+
+        .how-to-get-there-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 15px rgba(40, 167, 69, 0.7);
+            animation-play-state: paused; /* Pausa la animación en hover */
+        }
+
+        @keyframes pulse-green {
+            0% { box-shadow: 0 0 5px rgba(40, 167, 69, 0.5); }
+            50% { box-shadow: 0 0 20px rgba(40, 167, 69, 0.8); }
+            100% { box-shadow: 0 0 5px rgba(40, 167, 69, 0.5); }
+        }
+
+
         .footer-bottom p {
             margin: 2px 0; /* Margen mínimo entre párrafos */
         }
@@ -1230,6 +1258,9 @@
     <footer class="site-footer">
         <div class="footer-content">
             <h3>Nuestras Ubicaciones</h3>
+            <a href="https://fernandobust19.github.io/Map/" class="how-to-get-there-btn" target="_blank">
+                Cómo llegar
+            </a>
             <div class="footer-locations"> <!-- Contenedor para los items de ubicación -->
                 <div class="location-item">
                     <h4>Upcons Sur (La Ecuatoriana)</h4>
