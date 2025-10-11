@@ -1005,14 +1005,37 @@
 
         .footer-bottom {
             border-top: 1px solid #444;
-            padding-top: 20px;
-            font-size: 0.7rem; /* Letra más pequeña */
+            padding-top: 10px; /* Padding reducido */
+            font-size: 0.65rem; /* Letra aún más pequeña */
             color: #777;
-            line-height: 1.2; /* Espaciado entre líneas mínimo */
+            line-height: 1.1; /* Espaciado entre líneas más compacto */
         }
         
         .footer-bottom p {
-            margin: 2px 0; /* Margen mínimo entre párrafos */
+            margin: 1px 0; /* Margen muy mínimo entre párrafos */
+        }
+        
+        .location-button {
+            background: #00cc00; /* Verde más oscuro */
+            color: #fff; /* Texto blanco en negrilla */
+            padding: 12px 30px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            transition: all 0.3s ease;
+            margin-top: 15px;
+            margin-bottom: 20px;
+            box-shadow: 0 0 20px rgba(0, 204, 0, 0.6); /* Efecto de brillo verde más oscuro */
+        }
+        
+        .location-button:hover {
+            background: #00aa00; /* Verde aún más oscuro en hover */
+            transform: translateY(-2px);
+            box-shadow: 0 0 30px rgba(0, 204, 0, 0.8); /* Más brillo en hover */
         }
     </style>
 </head>
@@ -1230,22 +1253,17 @@
     <footer class="site-footer">
         <div class="footer-content">
             <h3>Nuestras Ubicaciones</h3>
+            <div style="text-align: center;">
+                <a href="https://fernandobust19.github.io/Map/" target="_blank" class="location-button">Cómo llegar</a>
+            </div>
             <div class="footer-locations"> <!-- Contenedor para los items de ubicación -->
                 <div class="location-item">
                     <h4>Upcons Sur (La Ecuatoriana)</h4>
                     <p>Av. La Ecuatoriana & Martín Santiago Icaza</p>
-                    <a href="https://maps.app.goo.gl/JX7EaUsHb8yT9vgA6?g_st=ac" target="_blank">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path d="M8 16s6-5.686 6-10A6 6 0 0 0 2 6c0 4.314 6 10 6 10zm0-7a3 3 0 1 1 0-6 3 3 0 0 1 0 6z"/></svg>
-                        Ver en Google Maps
-                    </a>
                 </div>
                 <div class="location-item">
                     <h4>Upcons (Mariscal Sucre)</h4>
                     <p>Av. Mariscal Sucre</p>
-                    <a href="https://maps.app.goo.gl/6yk2nNjZJQ1WWJDA7?g_st=ac" target="_blank">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path d="M8 16s6-5.686 6-10A6 6 0 0 0 2 6c0 4.314 6 10 6 10zm0-7a3 3 0 1 1 0-6 3 3 0 0 1 0 6z"/></svg>
-                        Ver en Google Maps
-                    </a>
                 </div>
             </div>
             <div class="footer-bottom">
