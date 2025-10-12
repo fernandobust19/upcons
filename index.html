@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <title>Mi Página Web</title>
+    <title>Teja Española PVC - Upcons</title>
 
     <!-- Carga el componente <model-viewer> de Google -->
     <script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.5.0/model-viewer.min.js"></script>
@@ -528,6 +528,7 @@
             -khtml-user-select: none;    /* Konqueror HTML */
             -moz-user-select: none;      /* Old versions of Firefox */
             -ms-user-select: none;       /* Internet Explorer/Edge */
+            -webkit-tap-highlight-color: transparent; /* Evita el resaltado azul en móviles */
             user-select: none;           /* Standard */
         }
 
@@ -543,6 +544,31 @@
 
         .features-button:hover {
             transform: scale(1.05);
+        }
+
+        /* Elimina el recuadro azul al hacer foco */
+        .features-button:focus {
+            outline: none;
+        }
+
+        /* Estilo para el botón activo */
+        .features-button.active {
+            background: linear-gradient(45deg, #8a2be2, #6a4a9c); /* Gradiente morado para el activo */
+            animation: none; /* Pausa la animación de pulso cuando está activo */
+            box-shadow: 0 0 15px rgba(138, 43, 226, 0.7);
+        }
+
+        /* Triángulo indicador para el botón activo */
+        .features-button.active::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            /* Apunta hacia la izquierda (hacia el contenido) */
+            left: -10px; 
+            transform: translateY(-50%);
+            border-top: 8px solid transparent;
+            border-bottom: 8px solid transparent;
+            border-right: 10px solid #793dbb; /* Color que coincide con el gradiente */
         }
 
         /* --- Estilos para Subtítulos Elegantes en Modales --- */
@@ -1006,7 +1032,7 @@
         .footer-bottom {
             border-top: 1px solid #444;
             padding-top: 10px; /* Padding reducido */
-            font-size: 0.65rem; /* Letra aún más pequeña */
+            font-size: 5px; /* Tamaño bien pequeño */
             color: #777;
             line-height: 1.1; /* Espaciado entre líneas más compacto */
         }
@@ -1306,6 +1332,13 @@
         contentButtons.forEach(button => {
             button.addEventListener('click', () => {
                 const contentId = button.dataset.content;
+
+                // Quitar la clase 'active' de todos los botones
+                contentButtons.forEach(btn => {
+                    btn.classList.remove('active');
+                });
+                // Añadir la clase 'active' al botón presionado
+                button.classList.add('active');
 
                 // Ocultar todos los paneles
                 contentPanels.forEach(panel => {
