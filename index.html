@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <title>Teja Española PVC - Upcons</title>
+    <link rel="icon" href="logo.png" type="image/png">
 
     <!-- Carga el componente <model-viewer> de Google -->
     <script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.5.0/model-viewer.min.js"></script>
@@ -87,6 +88,74 @@
             100% {
                 left: 150%;
             }
+        }
+
+        /* --- Asistente flotante (FAB + Modal) --- */
+        .assistant-fab {
+            position: fixed;
+            right: 18px;
+            bottom: 18px;
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            border: none;
+            background: linear-gradient(135deg, #1e3c72, #2a5298);
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.25);
+            cursor: pointer;
+            z-index: 10000;
+        }
+        .assistant-fab svg { width: 26px; height: 26px; }
+        .assistant-fab:active { transform: scale(0.98); }
+
+        .assistant-backdrop {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.45);
+            display: none;
+            z-index: 10000;
+        }
+        .assistant-modal {
+            position: fixed;
+            right: 20px;
+            bottom: 90px;
+            width: min(420px, 92vw);
+            height: min(70vh, 640px);
+            background: #0b1320;
+            border-radius: 14px;
+            box-shadow: 0 14px 48px rgba(0,0,0,0.35);
+            overflow: hidden;
+            display: none;
+            z-index: 10001;
+        }
+        .assistant-modal header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 12px;
+            background: linear-gradient(90deg, #1e3c72, #2a5298);
+            color: #fff;
+            font-weight: 700;
+            letter-spacing: .5px;
+        }
+        .assistant-close {
+            background: transparent;
+            border: none;
+            color: #fff;
+            cursor: pointer;
+            padding: 6px;
+        }
+        .assistant-frame {
+            width: 100%;
+            height: calc(100% - 44px);
+            border: 0;
+            background: #0b1320;
+        }
+        @media (max-width: 768px) {
+            .assistant-modal { right: 10px; left: 10px; width: auto; height: 70vh; bottom: 90px; }
         }
 
         /* --- Estilos Responsivos para Móviles --- */
@@ -1389,6 +1458,54 @@
                 }
             });
         });
+
+        // --- Asistente flotante: abrir/cerrar modal con iframe ---
+        (function setupAssistant() {
+            const fab = document.createElement('button');
+            fab.className = 'assistant-fab';
+            fab.setAttribute('aria-label', 'Abrir asistente');
+            fab.innerHTML = `
+                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                    <path d="M12 2a9 9 0 0 0-9 9c0 2.4 1 4.57 2.62 6.12L5 22l4.06-1.88A9 9 0 1 0 12 2Z" stroke="white" stroke-width="1.5"/>
+                    <circle cx="8.5" cy="11" r="1.2" fill="white"/>
+                    <circle cx="12" cy="11" r="1.2" fill="white"/>
+                    <circle cx="15.5" cy="11" r="1.2" fill="white"/>
+                </svg>`;
+
+            const backdrop = document.createElement('div');
+            backdrop.className = 'assistant-backdrop';
+
+            const modal = document.createElement('div');
+            modal.className = 'assistant-modal';
+            modal.innerHTML = `
+                <header>
+                    <span>Asistente Upcons</span>
+                    <button class="assistant-close" aria-label="Cerrar">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M6 6l12 12M18 6L6 18" stroke="white" stroke-width="2" stroke-linecap="round"/>
+                        </svg>
+                    </button>
+                </header>
+                <iframe class="assistant-frame" src="https://upconsbot.onrender.com/" title="Asistente Upcons" referrerpolicy="no-referrer" allow="clipboard-write;" loading="lazy"></iframe>
+            `;
+
+            document.body.appendChild(backdrop);
+            document.body.appendChild(modal);
+            document.body.appendChild(fab);
+
+            const open = () => {
+                backdrop.style.display = 'block';
+                modal.style.display = 'block';
+            };
+            const close = () => {
+                modal.style.display = 'none';
+                backdrop.style.display = 'none';
+            };
+            fab.addEventListener('click', open);
+            backdrop.addEventListener('click', close);
+            modal.querySelector('.assistant-close').addEventListener('click', close);
+            document.addEventListener('keydown', (e) => { if (e.key === 'Escape') close(); });
+        })();
     </script>
 </body>
 </html>
