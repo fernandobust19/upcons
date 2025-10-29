@@ -90,85 +90,6 @@
             }
         }
 
-        /* --- Asistente flotante (FAB + Modal) --- */
-        .assistant-fab {
-            position: fixed;
-            right: 18px;
-            bottom: 18px;
-            width: 56px;
-            height: 56px;
-            border-radius: 50%;
-            border: none;
-            background: linear-gradient(135deg, #1e3c72, #2a5298);
-            color: #fff;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.25);
-            cursor: pointer;
-            z-index: 10000;
-        }
-        .assistant-fab svg { width: 26px; height: 26px; }
-        .assistant-fab:active { transform: scale(0.98); }
-
-        .assistant-backdrop {
-            position: fixed;
-            inset: 0;
-            background: rgba(0,0,0,0.45);
-            display: none;
-            z-index: 10000;
-        }
-        .assistant-modal {
-            position: fixed;
-            right: 20px;
-            bottom: 20px;
-            width: min(460px, 96vw);
-            height: min(85vh, 720px);
-            background: #0b1320;
-            border-radius: 14px;
-            box-shadow: 0 14px 48px rgba(0,0,0,0.35);
-            overflow: hidden;
-            display: none;
-            z-index: 10001;
-            display: flex;
-            flex-direction: column;
-        }
-        .assistant-modal header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 10px 12px;
-            background: linear-gradient(90deg, #1e3c72, #2a5298);
-            color: #fff;
-            font-weight: 700;
-            letter-spacing: .5px;
-        }
-        .assistant-close {
-            background: transparent;
-            border: none;
-            color: #fff;
-            cursor: pointer;
-            padding: 6px;
-        }
-        .assistant-frame {
-            width: 100%;
-            flex: 1 1 auto;
-            min-height: 0; /* permite que el iframe use todo el alto disponible */
-            border: 0;
-            background: #0b1320;
-        }
-        @media (max-width: 768px) {
-            .assistant-modal {
-                right: 10px;
-                left: 10px;
-                top: 10px;
-                bottom: 10px;
-                width: auto;
-                height: auto; /* ocupa casi toda la pantalla en móviles */
-            }
-            .assistant-fab { right: 14px; bottom: 14px; }
-        }
-
         /* --- Estilos Responsivos para Móviles --- */
         @media (max-width: 768px) {
             .main-container {
@@ -1159,6 +1080,7 @@
             box-shadow: 0 4px 8px rgba(0,0,0,0.2);
             z-index: 1000;
             transition: transform 0.3s ease;
+            cursor: pointer;
         }
 
         .floating-bot-button:hover {
@@ -1168,11 +1090,6 @@
         .floating-bot-button img {
             width: 36px;
             height: 36px;
-        }
-
-        /* Ajustes para el botón flotante */
-        #bot-assistant-button {
-            cursor: pointer;
         }
 
         /* --- Estilos para el Modal del Asistente --- */
@@ -1206,16 +1123,17 @@
         .modal-close {
             position: absolute;
             top: 10px;
-            right: 15px;
-            font-size: 28px;
-            font-weight: bold;
-            color: #555;
+            right: 10px;
+            background: transparent;
+            border: none;
             cursor: pointer;
+            padding: 5px;
             z-index: 1;
+            line-height: 0;
         }
 
-        .modal-close:hover {
-            color: #000;
+        .modal-close:hover svg path {
+            stroke: #000;
         }
 
         #bot-iframe {
@@ -1466,6 +1384,23 @@
         </div>
     </footer>
 
+    <!-- Botón flotante del Asistente -->
+    <div id="bot-assistant-button" class="floating-bot-button">
+        <img src="bot.png" alt="Asistente de Precios">
+    </div>
+
+    <!-- Modal del Asistente -->
+    <div id="bot-modal" class="modal-overlay">
+        <div class="modal-content">
+            <button class="modal-close" aria-label="Cerrar">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M6 6l12 12M18 6L6 18" stroke="#555" stroke-width="2" stroke-linecap="round"/>
+                </svg>
+            </button>
+            <iframe id="bot-iframe" src="about:blank" data-src="https://upconsbot.onrender.com/"></iframe>
+        </div>
+    </div>
+
     <script>
         // --- Lógica para el contador de carga del 3D ---
         const modelViewer = document.querySelector('#main-viewer');
@@ -1526,49 +1461,37 @@
                     // dismissPoster() ahora solo revela el modelo, no inicia la carga.
                     modelViewer.dismissPoster();
                 }
-                        });
-                    });
-            
-                    // --- Lógica para el Modal del Asistente ---
-                    const botButton = document.getElementById('bot-assistant-button');
-                    const botModal = document.getElementById('bot-modal');
-                    const botIframe = document.getElementById('bot-iframe');
-                    const closeModal = document.querySelector('.modal-close');
-            
-                    if (botButton && botModal && botIframe && closeModal) {
-                        // Abrir modal
-                        botButton.addEventListener('click', () => {
-                            // Cargar el iframe solo cuando se abre el modal por primera vez
-                            if (botIframe.src === 'about:blank') {
-                                botIframe.src = botIframe.dataset.src;
-                            }
-                            botModal.classList.add('active');
-                        });
-            
-                        // Cerrar modal con el botón de cerrar
-                        closeModal.addEventListener('click', () => {
-                            botModal.classList.remove('active');
-                        });
-            
-                        // Cerrar modal al hacer clic fuera del contenido
-                        botModal.addEventListener('click', (event) => {
-                            if (event.target === botModal) {
-                                botModal.classList.remove('active');
-                            }
-                        });
-                    }
-                </script>
-    <!-- Botón flotante del Asistente -->
-    <div id="bot-assistant-button" class="floating-bot-button">
-        <img src="bot.png" alt="Asistente de Precios">
-    </div>
+            });
+        });
 
-    <!-- Modal del Asistente -->
-    <div id="bot-modal" class="modal-overlay">
-        <div class="modal-content">
-            <span class="modal-close">&times;</span>
-            <iframe id="bot-iframe" src="about:blank" data-src="https://upconsbot.onrender.com/"></iframe>
-        </div>
-    </div>
+        // --- Lógica para el Modal del Asistente ---
+        const botButton = document.getElementById('bot-assistant-button');
+        const botModal = document.getElementById('bot-modal');
+        const botIframe = document.getElementById('bot-iframe');
+        const closeModal = document.querySelector('.modal-close');
+
+        if (botButton && botModal && botIframe && closeModal) {
+            // Abrir modal
+            botButton.addEventListener('click', () => {
+                // Cargar el iframe solo cuando se abre el modal por primera vez
+                if (botIframe.src === 'about:blank' || botIframe.src === '') {
+                    botIframe.src = botIframe.dataset.src;
+                }
+                botModal.classList.add('active');
+            });
+
+            // Cerrar modal con el botón de cerrar
+            closeModal.addEventListener('click', () => {
+                botModal.classList.remove('active');
+            });
+
+            // Cerrar modal al hacer clic fuera del contenido
+            botModal.addEventListener('click', (event) => {
+                if (event.target === botModal) {
+                    botModal.classList.remove('active');
+                }
+            });
+        }
+    </script>
 </body>
 </html>
