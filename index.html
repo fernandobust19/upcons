@@ -1169,6 +1169,65 @@
             width: 36px;
             height: 36px;
         }
+
+        /* Ajustes para el botón flotante */
+        #bot-assistant-button {
+            cursor: pointer;
+        }
+
+        /* --- Estilos para el Modal del Asistente --- */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            display: none; /* Oculto por defecto */
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+        }
+
+        .modal-content {
+            position: relative;
+            background: #fff;
+            border-radius: 10px;
+            width: 90%;
+            max-width: 400px;
+            height: 70%;
+            max-height: 600px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            overflow: hidden; /* Para contener el iframe */
+            display: flex;
+            flex-direction: column;
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            font-size: 28px;
+            font-weight: bold;
+            color: #555;
+            cursor: pointer;
+            z-index: 1;
+        }
+
+        .modal-close:hover {
+            color: #000;
+        }
+
+        #bot-iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        /* Para que el modal sea visible */
+        .modal-overlay.active {
+            display: flex;
+        }
     </style>
 </head>
 <body>
@@ -1467,56 +1526,49 @@
                     // dismissPoster() ahora solo revela el modelo, no inicia la carga.
                     modelViewer.dismissPoster();
                 }
-            });
-        });
+                        });
+                    });
+            
+                    // --- Lógica para el Modal del Asistente ---
+                    const botButton = document.getElementById('bot-assistant-button');
+                    const botModal = document.getElementById('bot-modal');
+                    const botIframe = document.getElementById('bot-iframe');
+                    const closeModal = document.querySelector('.modal-close');
+            
+                    if (botButton && botModal && botIframe && closeModal) {
+                        // Abrir modal
+                        botButton.addEventListener('click', () => {
+                            // Cargar el iframe solo cuando se abre el modal por primera vez
+                            if (botIframe.src === 'about:blank') {
+                                botIframe.src = botIframe.dataset.src;
+                            }
+                            botModal.classList.add('active');
+                        });
+            
+                        // Cerrar modal con el botón de cerrar
+                        closeModal.addEventListener('click', () => {
+                            botModal.classList.remove('active');
+                        });
+            
+                        // Cerrar modal al hacer clic fuera del contenido
+                        botModal.addEventListener('click', (event) => {
+                            if (event.target === botModal) {
+                                botModal.classList.remove('active');
+                            }
+                        });
+                    }
+                </script>
+    <!-- Botón flotante del Asistente -->
+    <div id="bot-assistant-button" class="floating-bot-button">
+        <img src="bot.png" alt="Asistente de Precios">
+    </div>
 
-        // --- Asistente flotante: abrir/cerrar modal con iframe ---
-        (function setupAssistant() {
-            const fab = document.createElement('button');
-            fab.className = 'assistant-fab';
-            fab.setAttribute('aria-label', 'Abrir asistente');
-            fab.innerHTML = `
-                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                    <path d="M12 2a9 9 0 0 0-9 9c0 2.4 1 4.57 2.62 6.12L5 22l4.06-1.88A9 9 0 1 0 12 2Z" stroke="white" stroke-width="1.5"/>
-                    <circle cx="8.5" cy="11" r="1.2" fill="white"/>
-                    <circle cx="12" cy="11" r="1.2" fill="white"/>
-                    <circle cx="15.5" cy="11" r="1.2" fill="white"/>
-                </svg>`;
-
-            const backdrop = document.createElement('div');
-            backdrop.className = 'assistant-backdrop';
-
-            const modal = document.createElement('div');
-            modal.className = 'assistant-modal';
-            modal.innerHTML = `
-                <header>
-                    <span>Asistente Upcons</span>
-                    <button class="assistant-close" aria-label="Cerrar">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M6 6l12 12M18 6L6 18" stroke="white" stroke-width="2" stroke-linecap="round"/>
-                        </svg>
-                    </button>
-                </header>
-                <iframe class="assistant-frame" src="https://upconsbot.onrender.com/" title="Asistente Upcons" referrerpolicy="no-referrer" allow="clipboard-write;" loading="lazy"></iframe>
-            `;
-
-            document.body.appendChild(backdrop);
-            document.body.appendChild(modal);
-            document.body.appendChild(fab);
-
-            const open = () => {
-                backdrop.style.display = 'block';
-                modal.style.display = 'block';
-            };
-            const close = () => {
-                modal.style.display = 'none';
-                backdrop.style.display = 'none';
-            };
-            fab.addEventListener('click', open);
-            backdrop.addEventListener('click', close);
-            modal.querySelector('.assistant-close').addEventListener('click', close);
-            document.addEventListener('keydown', (e) => { if (e.key === 'Escape') close(); });
-        })();
-    </script>
+    <!-- Modal del Asistente -->
+    <div id="bot-modal" class="modal-overlay">
+        <div class="modal-content">
+            <span class="modal-close">&times;</span>
+            <iframe id="bot-iframe" src="about:blank" data-src="https://upconsbot.onrender.com/"></iframe>
+        </div>
+    </div>
 </body>
 </html>
