@@ -121,15 +121,17 @@
         .assistant-modal {
             position: fixed;
             right: 20px;
-            bottom: 90px;
-            width: min(420px, 92vw);
-            height: min(70vh, 640px);
+            bottom: 20px;
+            width: min(460px, 96vw);
+            height: min(85vh, 720px);
             background: #0b1320;
             border-radius: 14px;
             box-shadow: 0 14px 48px rgba(0,0,0,0.35);
             overflow: hidden;
             display: none;
             z-index: 10001;
+            display: flex;
+            flex-direction: column;
         }
         .assistant-modal header {
             display: flex;
@@ -150,12 +152,21 @@
         }
         .assistant-frame {
             width: 100%;
-            height: calc(100% - 44px);
+            flex: 1 1 auto;
+            min-height: 0; /* permite que el iframe use todo el alto disponible */
             border: 0;
             background: #0b1320;
         }
         @media (max-width: 768px) {
-            .assistant-modal { right: 10px; left: 10px; width: auto; height: 70vh; bottom: 90px; }
+            .assistant-modal {
+                right: 10px;
+                left: 10px;
+                top: 10px;
+                bottom: 10px;
+                width: auto;
+                height: auto; /* ocupa casi toda la pantalla en móviles */
+            }
+            .assistant-fab { right: 14px; bottom: 14px; }
         }
 
         /* --- Estilos Responsivos para Móviles --- */
