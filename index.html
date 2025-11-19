@@ -78,6 +78,44 @@
             margin: 0 auto;
         }
 
+        .hero-message {
+            background: radial-gradient(circle at top, rgba(41, 98, 255, 0.15), rgba(30, 60, 114, 0.85)), url('fondo.jpg') center/cover no-repeat;
+            color: #fff;
+            text-align: center;
+            padding: 35px 20px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-message::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(12, 21, 40, 0.9), rgba(36, 63, 116, 0.6));
+            z-index: 0;
+        }
+
+        .hero-message-content {
+            position: relative;
+            z-index: 1;
+            max-width: 820px;
+            margin: 0 auto;
+        }
+
+        .hero-message h2 {
+            margin: 0 0 10px;
+            font-size: 2rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .hero-message p {
+            margin: 0;
+            font-size: 1.05rem;
+            line-height: 1.6;
+            color: rgba(255, 255, 255, 0.9);
+        }
+
         @keyframes light-sweep-ai {
             0% {
                 left: -150%;
@@ -87,6 +125,20 @@
             }
             100% {
                 left: 150%;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .hero-message {
+                padding: 25px 15px;
+            }
+
+            .hero-message h2 {
+                font-size: 1.5rem;
+            }
+
+            .hero-message p {
+                font-size: 0.95rem;
             }
         }
 
@@ -1208,6 +1260,12 @@
     <header class="page-header">
         <img src="logo.png" alt="Logo Upcons" class="header-logo">
     </header>
+    <section class="hero-message">
+        <div class="hero-message-content">
+            <h2>Un Techo con Historia, una Solución del Futuro.</h2>
+            <p>La apariencia icónica de la teja española, ahora reinventada en PVC de alto rendimiento. Su hogar merece lo mejor: una estética que perdura y una protección superior.</p>
+        </div>
+    </section>
     <div class="title-bar">
         <h1 class="main-title">TEJA ESPAÑOLA PVC</h1>
     </div>
@@ -1442,7 +1500,7 @@
 
     <!-- Botón flotante del Asistente -->
     <button id="bot-assistant-button" class="floating-bot-button" type="button" aria-controls="bot-panel" aria-expanded="false">
-        <img src="logo.png" alt="Abrir asistente virtual">
+        <img src="asistente.png" alt="Abrir asistente virtual">
     </button>
 
     <!-- Ventana flotante del Asistente -->
