@@ -1560,6 +1560,9 @@
         let dragOffsetX = 0;
         let dragOffsetY = 0;
         let botButtonDidDrag = false;
+        const dragActivationDelay = 350;
+        let dragActivationTimeout = null;
+        let dragStartPoint = null;
 
         const loadBotIframe = () => {
             if (!botIframe) return;
@@ -1588,16 +1591,28 @@
             setButtonPosition(newX, newY);
         };
 
-        const startBotDrag = (event) => {
-            if (!botButton) return;
-            const point = event.touches ? event.touches[0] : event;
+        const beginBotDrag = () => {
+            if (!botButton || !dragStartPoint) return;
             const rect = botButton.getBoundingClientRect();
             isBotDragging = true;
-            dragOffsetX = point.clientX - rect.left;
-            dragOffsetY = point.clientY - rect.top;
+            dragOffsetX = dragStartPoint.clientX - rect.left;
+            dragOffsetY = dragStartPoint.clientY - rect.top;
             botButtonDidDrag = false;
             botButton.classList.add('dragging');
-            event.preventDefault();
+        };
+
+        const scheduleBotDrag = (event) => {
+            if (!botButton) return;
+            const point = event.touches ? event.touches[0] : event;
+            dragStartPoint = { clientX: point.clientX, clientY: point.clientY };
+            clearTimeout(dragActivationTimeout);
+            dragActivationTimeout = setTimeout(beginBotDrag, dragActivationDelay);
+        };
+
+        const cancelPendingDrag = () => {
+            clearTimeout(dragActivationTimeout);
+            dragActivationTimeout = null;
+            dragStartPoint = null;
         };
 
         const onBotDrag = (event) => {
@@ -1612,6 +1627,7 @@
         };
 
         const endBotDrag = () => {
+            cancelPendingDrag();
             if (!isBotDragging || !botButton) return;
             isBotDragging = false;
             botButton.classList.remove('dragging');
@@ -1665,7 +1681,7 @@
                 }
             });
 
-            botButton.addEventListener('pointerdown', startBotDrag);
+            botButton.addEventListener('pointerdown', scheduleBotDrag);
             window.addEventListener('pointermove', onBotDrag);
             window.addEventListener('pointerup', endBotDrag);
             window.addEventListener('pointercancel', endBotDrag);
