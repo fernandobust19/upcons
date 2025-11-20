@@ -1098,6 +1098,11 @@
             box-shadow: 0 18px 35px rgba(0, 0, 0, 0.35);
         }
 
+        .floating-bot-button.pressed:not(.dragging) {
+            transform: translateY(1px) scale(0.94);
+            box-shadow: 0 10px 24px rgba(0, 0, 0, 0.28);
+        }
+
         .floating-bot-button:focus-visible {
             outline: 3px solid rgba(255, 255, 255, 0.85);
             outline-offset: 4px;
@@ -1194,11 +1199,11 @@
         }
 
         #bot-iframe {
-            /* Escala ligera para que el contenido del bot no se recorte (ej. boton Enviar) */
-            width: 108%;
-            height: 108%;
-            transform: scale(0.92);
-            transform-origin: top right;
+            /* Ocupa todo el panel para que el chat no se recorte */
+            width: 100%;
+            height: 100%;
+            transform: none;
+            transform-origin: top left;
             border: none;
             flex: 1;
             min-height: 0;
@@ -1576,6 +1581,11 @@
 
         const clamp = (value, min, max) => Math.min(Math.max(value, min), max);
 
+        const setButtonPressed = (pressed) => {
+            if (!botButton) return;
+            botButton.classList.toggle('pressed', pressed);
+        };
+
         const setButtonPosition = (x, y) => {
             if (!botButton) return;
             botButton.style.left = `${x}px`;
@@ -1602,6 +1612,7 @@
             dragOffsetY = dragStartPoint.clientY - rect.top;
             botButtonDidDrag = false;
             botButton.classList.add('dragging');
+            setButtonPressed(false);
         };
 
         const scheduleBotDrag = (event) => {
@@ -1637,6 +1648,7 @@
                 botButton.classList.remove('dragging');
                 ensureButtonOnScreen();
             }
+            setButtonPressed(false);
             botButtonDidDrag = false; // Permite que el proximo toque abra/cierre sin consumir el click
         };
 
@@ -1645,7 +1657,8 @@
             const btnRect = botButton.getBoundingClientRect();
             const panelRect = botPanel.getBoundingClientRect();
             const gap = 12;
-            let left = btnRect.left + btnRect.width - panelRect.width;
+            const horizontalNudge = 10;
+            let left = btnRect.left + btnRect.width - panelRect.width - horizontalNudge;
             left = clamp(left, 8, window.innerWidth - panelRect.width - 8);
             let top = btnRect.top - panelRect.height - gap;
             if (top < 8) {
@@ -1687,7 +1700,10 @@
                 }
             });
 
-            botButton.addEventListener('pointerdown', scheduleBotDrag);
+            botButton.addEventListener('pointerdown', (event) => {
+                setButtonPressed(true);
+                scheduleBotDrag(event);
+            });
             window.addEventListener('pointermove', onBotDrag);
             window.addEventListener('pointerup', endBotDrag);
             window.addEventListener('pointercancel', endBotDrag);
