@@ -1080,10 +1080,17 @@
             justify-content: center;
             align-items: center;
             box-shadow: 0 15px 30px rgba(0, 0, 0, 0.35);
-            z-index: 1500;
+            z-index: 3000; /* Sobre todo lo demas */
             transition: transform 0.25s ease, box-shadow 0.25s ease;
             cursor: pointer;
             overflow: hidden;
+            touch-action: none; /* Permite arrastrar con dedo */
+            user-select: none;
+        }
+
+        .floating-bot-button.dragging {
+            transition: none;
+            box-shadow: 0 16px 28px rgba(0, 0, 0, 0.25);
         }
 
         .floating-bot-button:hover {
@@ -1109,18 +1116,18 @@
             position: fixed;
             bottom: 25px;
             right: 20px;
-            width: 360px;
+            width: 340px;
             max-width: calc(100vw - 30px);
-            height: min(640px, calc(100vh - 60px));
+            height: min(520px, calc(100vh - 70px));
             background: #fff;
-            border-radius: 20px;
+            border-radius: 18px;
             box-shadow: 0 20px 60px rgba(15, 15, 15, 0.35);
             overflow: hidden;
             transform: translateY(20px);
             opacity: 0;
             pointer-events: none;
             transition: opacity 0.3s ease, transform 0.3s ease;
-            z-index: 1400;
+            z-index: 2500;
             display: flex;
             flex-direction: column;
         }
@@ -1201,10 +1208,11 @@
             }
 
             .bot-chat-panel {
-                width: calc(100vw - 14px);
-                right: 7px;
-                bottom: 12px;
-                height: calc(100vh - 40px);
+                width: 88vw;
+                max-width: 400px;
+                right: 6vw;
+                bottom: 10px;
+                height: 75vh;
                 border-radius: 16px;
             }
         }
@@ -1548,6 +1556,10 @@
         const botPanel = document.getElementById('bot-panel');
         const botIframe = document.getElementById('bot-iframe');
         const botMinimize = document.getElementById('bot-minimize');
+        let isBotDragging = false;
+        let dragOffsetX = 0;
+        let dragOffsetY = 0;
+        let botButtonDidDrag = false;
 
         const loadBotIframe = () => {
             if (!botIframe) return;
@@ -1556,12 +1568,81 @@
             }
         };
 
+        const clamp = (value, min, max) => Math.min(Math.max(value, min), max);
+
+        const setButtonPosition = (x, y) => {
+            if (!botButton) return;
+            botButton.style.left = `${x}px`;
+            botButton.style.top = `${y}px`;
+            botButton.style.right = 'auto';
+            botButton.style.bottom = 'auto';
+        };
+
+        const ensureButtonOnScreen = () => {
+            if (!botButton) return;
+            const rect = botButton.getBoundingClientRect();
+            const maxX = window.innerWidth - rect.width - 6;
+            const maxY = window.innerHeight - rect.height - 6;
+            const newX = clamp(rect.left, 6, maxX);
+            const newY = clamp(rect.top, 6, maxY);
+            setButtonPosition(newX, newY);
+        };
+
+        const startBotDrag = (event) => {
+            if (!botButton) return;
+            const point = event.touches ? event.touches[0] : event;
+            const rect = botButton.getBoundingClientRect();
+            isBotDragging = true;
+            dragOffsetX = point.clientX - rect.left;
+            dragOffsetY = point.clientY - rect.top;
+            botButtonDidDrag = false;
+            botButton.classList.add('dragging');
+            event.preventDefault();
+        };
+
+        const onBotDrag = (event) => {
+            if (!isBotDragging || !botButton) return;
+            const point = event.touches ? event.touches[0] : event;
+            const maxX = window.innerWidth - botButton.offsetWidth - 6;
+            const maxY = window.innerHeight - botButton.offsetHeight - 6;
+            const x = clamp(point.clientX - dragOffsetX, 6, maxX);
+            const y = clamp(point.clientY - dragOffsetY, 6, maxY);
+            setButtonPosition(x, y);
+            botButtonDidDrag = true;
+        };
+
+        const endBotDrag = () => {
+            if (!isBotDragging || !botButton) return;
+            isBotDragging = false;
+            botButton.classList.remove('dragging');
+            ensureButtonOnScreen();
+        };
+
+        const positionPanelNearButton = () => {
+            if (!botPanel || !botButton) return;
+            const btnRect = botButton.getBoundingClientRect();
+            const panelRect = botPanel.getBoundingClientRect();
+            const gap = 12;
+            let left = btnRect.left + btnRect.width - panelRect.width;
+            left = clamp(left, 8, window.innerWidth - panelRect.width - 8);
+            let top = btnRect.top - panelRect.height - gap;
+            if (top < 8) {
+                top = btnRect.bottom + gap;
+            }
+            top = clamp(top, 8, window.innerHeight - panelRect.height - 8);
+            botPanel.style.left = `${left}px`;
+            botPanel.style.top = `${top}px`;
+            botPanel.style.right = 'auto';
+            botPanel.style.bottom = 'auto';
+        };
+
         const openBotPanel = () => {
             if (!botPanel || !botButton) return;
             loadBotIframe();
             botPanel.classList.add('active');
             botPanel.setAttribute('aria-hidden', 'false');
             botButton.setAttribute('aria-expanded', 'true');
+            positionPanelNearButton();
         };
 
         const closeBotPanel = () => {
@@ -1573,12 +1654,21 @@
 
         if (botButton && botPanel) {
             botButton.addEventListener('click', () => {
+                if (botButtonDidDrag) {
+                    botButtonDidDrag = false;
+                    return;
+                }
                 if (botPanel.classList.contains('active')) {
                     closeBotPanel();
                 } else {
                     openBotPanel();
                 }
             });
+
+            botButton.addEventListener('pointerdown', startBotDrag);
+            window.addEventListener('pointermove', onBotDrag);
+            window.addEventListener('pointerup', endBotDrag);
+            window.addEventListener('pointercancel', endBotDrag);
         }
 
         if (botMinimize) {
@@ -1591,6 +1681,13 @@
         document.addEventListener('keydown', (event) => {
             if (event.key === 'Escape' && botPanel && botPanel.classList.contains('active')) {
                 closeBotPanel();
+            }
+        });
+
+        window.addEventListener('resize', () => {
+            ensureButtonOnScreen();
+            if (botPanel && botPanel.classList.contains('active')) {
+                positionPanelNearButton();
             }
         });
     </script>
