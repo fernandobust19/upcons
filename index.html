@@ -1628,10 +1628,13 @@
 
         const endBotDrag = () => {
             cancelPendingDrag();
-            if (!isBotDragging || !botButton) return;
-            isBotDragging = false;
-            botButton.classList.remove('dragging');
-            ensureButtonOnScreen();
+            if (!botButton) return;
+            if (isBotDragging) {
+                isBotDragging = false;
+                botButton.classList.remove('dragging');
+                ensureButtonOnScreen();
+            }
+            botButtonDidDrag = false; // Permite que el proximo toque abra/cierre sin consumir el click
         };
 
         const positionPanelNearButton = () => {
