@@ -1107,12 +1107,11 @@
         /* --- Estilos para la ventana flotante del bot --- */
         .bot-chat-panel {
             position: fixed;
-            bottom: 90px;
+            bottom: 25px;
             right: 20px;
             width: 360px;
             max-width: calc(100vw - 30px);
-            height: 520px;
-            max-height: 80vh;
+            height: min(640px, calc(100vh - 60px));
             background: #fff;
             border-radius: 20px;
             box-shadow: 0 20px 60px rgba(15, 15, 15, 0.35);
@@ -1135,7 +1134,7 @@
         .bot-chat-header {
             background: linear-gradient(135deg, #1e3c72, #2a5298);
             color: #fff;
-            padding: 12px 16px;
+            padding: 10px 14px;
             display: flex;
             align-items: center;
             justify-content: space-between;
@@ -1149,8 +1148,8 @@
         }
 
         .bot-chat-info img {
-            width: 36px;
-            height: 36px;
+            width: 32px;
+            height: 32px;
             border-radius: 50%;
             object-fit: cover;
             box-shadow: 0 0 10px rgba(255, 255, 255, 0.35);
@@ -1192,6 +1191,7 @@
             height: 100%;
             border: none;
             flex: 1;
+            min-height: 0;
         }
 
         @media (max-width: 600px) {
@@ -1201,10 +1201,11 @@
             }
 
             .bot-chat-panel {
-                width: calc(100vw - 20px);
-                right: 10px;
-                bottom: 85px;
-                height: 75vh;
+                width: calc(100vw - 14px);
+                right: 7px;
+                bottom: 12px;
+                height: calc(100vh - 40px);
+                border-radius: 16px;
             }
         }
     </style>
