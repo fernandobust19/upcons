@@ -1216,12 +1216,12 @@
             }
 
             .bot-chat-panel {
-                width: 88vw;
-                max-width: 400px;
-                right: 6vw;
-                bottom: 10px;
-                height: 75vh;
-                border-radius: 16px;
+                width: 100vw;
+                max-width: 100vw;
+                height: 100vh;
+                right: auto;
+                bottom: auto;
+                border-radius: 0;
             }
         }
     </style>
@@ -1654,6 +1654,16 @@
 
         const positionPanelNearButton = () => {
             if (!botPanel || !botButton) return;
+
+            // On mobile, go fullscreen and ignore button position
+            if (window.innerWidth <= 600) {
+                botPanel.style.left = '0';
+                botPanel.style.top = '0';
+                botPanel.style.right = 'auto';
+                botPanel.style.bottom = 'auto';
+                return;
+            }
+
             const btnRect = botButton.getBoundingClientRect();
             const panelRect = botPanel.getBoundingClientRect();
             const gap = 12;
